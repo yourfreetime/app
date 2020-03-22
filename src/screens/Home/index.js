@@ -1,19 +1,18 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import FeedScreen from "../Feed";
+import GlobalScreen from "../Global";
+import UserAreaScreen from "../UserArea";
+
+const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => (
-  <View style={styles.container}>
-    <Text>Home Screen</Text>
-  </View>
+  <Tab.Navigator>
+    <Tab.Screen name="Feed" component={FeedScreen} />
+    <Tab.Screen name="Global" component={GlobalScreen} />
+    <Tab.Screen name="UserArea" component={UserAreaScreen} />
+  </Tab.Navigator>
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  }
-});
 
 export default HomeScreen;
