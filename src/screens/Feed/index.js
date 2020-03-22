@@ -1,19 +1,17 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
+
+import style from "./Feed.style";
+import Card from "../../components/Card";
+import CardPost from "../../components/CardPost";
 
 const FeedScreen = () => (
-  <View style={styles.container}>
-    <Text>Feed Screen</Text>
+  <View style={style.container}>
+    <Card style={{ marginBottom: 16 }}>
+      <Text>O que você está fazendo no seu tempo livre?</Text>
+    </Card>
+    <CardPost />
   </View>
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  }
-});
 
 export default FeedScreen;
