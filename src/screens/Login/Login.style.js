@@ -5,14 +5,16 @@ const style = StyleSheet.create({
   logo: {
     width: 250,
     height: 250,
-    marginBottom: 10,
-    paddingTop: 20
+    marginBottom: 80
   },
   container: {
     flex: 1,
-    justifyContent: "center",
+    padding: 25,
     alignItems: "center",
     backgroundColor: colors.primary
+  },
+  button: {
+    backgroundColor: colors.white
   }
 });
 

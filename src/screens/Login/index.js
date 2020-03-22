@@ -1,20 +1,21 @@
 import React from "react";
-import { Image, Button, View } from "react-native";
+import { Image, Button, SafeAreaView } from "react-native";
 import { StackActions } from "@react-navigation/native";
 import style from "./Login.style";
 
 const LoginScreen = ({ navigation }) => (
-  <View style={style.container}>
+  <SafeAreaView style={style.container}>
     <Image
       resizeMode="contain"
       source={require("../../assets/logo.png")}
       style={style.logo}
     />
     <Button
-      title="Entrar"
+      title="Login com o Facebook"
+      style={style.button}
       onPress={() => navigation.dispatch(StackActions.replace("Home"))}
     />
-  </View>
+  </SafeAreaView>
 );
 
 export default LoginScreen;
