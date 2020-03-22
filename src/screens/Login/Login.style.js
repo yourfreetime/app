@@ -14,7 +14,7 @@ const style = StyleSheet.create({
     backgroundColor: colors.primary
   },
   button: {
-    backgroundColor: colors.white
+    color: colors.white
   }
 });
 
