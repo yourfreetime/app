@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
+import colors from "../../core/colors";
 
 const style = StyleSheet.create({
   container: {
     padding: 16,
     flex: 1,
-    backgroundColor: "#F5FCFF"
+    backgroundColor: colors.background
   }
 });
 

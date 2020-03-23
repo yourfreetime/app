@@ -17,6 +17,9 @@ const style = StyleSheet.create({
   primary: { backgroundColor: colors.primary },
   active: { backgroundColor: colors.dark },
   white: { backgroundColor: colors.white },
+  primaryText: { color: colors.white },
+  activeText: { color: colors.white },
+  whiteText: {},
   text: {
     fontSize: 15,
     textTransform: "uppercase",

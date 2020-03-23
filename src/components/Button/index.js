@@ -8,7 +8,7 @@ const ButtonComponent = ({ title, variant, onPress }) => (
     background={TouchableNativeFeedback.SelectableBackground()}
   >
     <View style={[style.root, style[variant]]}>
-      <Text style={style.text}>{title}</Text>
+      <Text style={[style.texte, style[`${variant}Text`]]}>{title}</Text>
     </View>
   </TouchableNativeFeedback>
 );

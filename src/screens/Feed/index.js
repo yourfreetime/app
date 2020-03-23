@@ -31,18 +31,7 @@ const FeedScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={style.container}>
       <TouchableOpacity
-        onPress={() => {
-          navigation.dispatch(StackActions.push("FormPost"));
-          // firestore()
-          //   .collection("posts")
-          //   .add({
-          //     date: firestore.Timestamp.fromDate(new Date()),
-          //     author: firestore()
-          //       .collection("users")
-          //       .doc(firebase.auth().currentUser.uid),
-          //     text: "Correr em casa"
-          //   });
-        }}
+        onPress={() => navigation.dispatch(StackActions.push("FormPost"))}
       >
         <Card style={{ marginBottom: 16 }}>
           <Text>O que você está fazendo no seu tempo livre?</Text>

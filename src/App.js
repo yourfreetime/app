@@ -32,7 +32,10 @@ const App = () => (
       <Stack.Screen
         name="FormPost"
         component={FormPostScreen}
-        options={{ headerTitle: "" }}
+        options={{
+          headerTitle: "",
+          headerStyle: { backgroundColor: colors.background, elevation: 0 }
+        }}
       />
     </Stack.Navigator>
   </NavigationContainer>
