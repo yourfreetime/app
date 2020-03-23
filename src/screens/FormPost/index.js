@@ -29,7 +29,7 @@ const FormPostScreen = ({ navigation }) => {
       />
       <Button
         variant="primary"
-        title="Enviar"
+        title="Publicar"
         onPress={async () => {
           firestore()
             .collection("posts")

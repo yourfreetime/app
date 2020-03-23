@@ -1,20 +1,19 @@
 import React from "react";
 import { View, Text, TouchableNativeFeedback, Image } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
+
 import style from "./Button.style";
 
 const ButtonComponent = ({
   title,
   variant,
   onPress,
+  iconColor,
   startIcon: startIconProp
 }) => {
   const startIcon = startIconProp ? (
     <View style={style.startIcon}>
-      <Image
-        style={style.iconSizeMedium}
-        resizeMode="contain"
-        source={startIconProp}
-      />
+      <Icon name={startIconProp} size={20} color={iconColor} />
     </View>
   ) : null;
 
