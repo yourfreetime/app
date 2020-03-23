@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Text, SafeAreaView, TouchableOpacity, FlatList } from "react-native";
+import { StackActions } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
-import { firebase } from "@react-native-firebase/auth";
 
 import style from "./Feed.style";
 import Card from "../../components/Card";
 import CardPost from "../../components/CardPost";
 
-const FeedScreen = () => {
+const FeedScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
@@ -32,15 +32,16 @@ const FeedScreen = () => {
     <SafeAreaView style={style.container}>
       <TouchableOpacity
         onPress={() => {
-          firestore()
-            .collection("posts")
-            .add({
-              date: firestore.Timestamp.fromDate(new Date()),
-              author: firestore()
-                .collection("users")
-                .doc(firebase.auth().currentUser.uid),
-              text: "Correr em casa"
-            });
+          navigation.dispatch(StackActions.push("FormPost"));
+          // firestore()
+          //   .collection("posts")
+          //   .add({
+          //     date: firestore.Timestamp.fromDate(new Date()),
+          //     author: firestore()
+          //       .collection("users")
+          //       .doc(firebase.auth().currentUser.uid),
+          //     text: "Correr em casa"
+          //   });
         }}
       >
         <Card style={{ marginBottom: 16 }}>
