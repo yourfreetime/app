@@ -4,7 +4,7 @@ import colors from "../../core/colors";
 const style = StyleSheet.create({
   root: {
     backgroundColor: colors.white,
-    width: "100%",
+    // width: "100%",
     padding: 16,
     elevation: 5,
     shadowColor: "#000",

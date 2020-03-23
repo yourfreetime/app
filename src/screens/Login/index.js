@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Image, SafeAreaView } from "react-native";
+import firestore from "@react-native-firebase/firestore";
 import { StackActions } from "@react-navigation/native";
 import { firebase } from "@react-native-firebase/auth";
 import { AccessToken, LoginManager } from "react-native-fbsdk";
@@ -27,13 +28,27 @@ const LoginScreen = ({ navigation }) => {
           setLoading(true);
 
           await LoginManager.logInWithPermissions(["public_profile", "email"]);
-          const data = await AccessToken.getCurrentAccessToken();
-
+          const token = await AccessToken.getCurrentAccessToken();
           const credential = firebase.auth.FacebookAuthProvider.credential(
-            data.accessToken
+            token.accessToken
           );
+          const user = await firebase.auth().signInWithCredential(credential);
 
-          await firebase.auth().signInWithCredential(credential);
+          const dataUser = {
+            ...user.additionalUserInfo.profile,
+            picture: user.additionalUserInfo.profile.picture.data.url,
+            providerId: user.additionalUserInfo.providerId,
+            dateUpdated: firestore.Timestamp.fromDate(new Date())
+          };
+
+          if (user.additionalUserInfo.isNewUser) {
+            dataUser.dateCreated = firestore.Timestamp.fromDate(new Date());
+          }
+
+          await firestore()
+            .collection("users")
+            .doc(user.user.uid)
+            .set(dataUser);
 
           setLoading(false);
 
