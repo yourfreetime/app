@@ -16,6 +16,7 @@ const FeedScreen = ({ navigation }) => {
 
     const unsubscribe = firestore()
       .collection("posts")
+      .orderBy("date", "desc")
       .onSnapshot(async querySnapshot => {
         setLoading(false);
         setPosts(
