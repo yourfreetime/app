@@ -1,8 +1,9 @@
 import { StyleSheet } from "react-native";
-import colors from "../../core/colors";
+import colors from "../../../core/colors";
 
 const style = StyleSheet.create({
   root: {
+    flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     width: "100%",
@@ -24,6 +25,14 @@ const style = StyleSheet.create({
     fontSize: 15,
     textTransform: "uppercase",
     fontWeight: "900"
+  },
+  startIcon: {
+    marginRight: 8,
+    marginLeft: -4
+  },
+  iconSizeMedium: {
+    width: 20,
+    height: 20
   }
 });
 

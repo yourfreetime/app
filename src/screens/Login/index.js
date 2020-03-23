@@ -23,6 +23,7 @@ const LoginScreen = ({ navigation }) => {
       />
       <Button
         variant="white"
+        startIcon={require("../../assets/facebook.png")}
         title="Login com o Facebook"
         onPress={async () => {
           setLoading(true);
