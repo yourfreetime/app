@@ -24,7 +24,6 @@ const FooterComponent = ({ post }) => {
         onPress={async () => {
           if (!like) {
             await likePost(post.id, {
-              date: firestore.Timestamp.fromDate(new Date()),
               user: firestore()
                 .collection("users")
                 .doc(firebase.auth().currentUser.uid)

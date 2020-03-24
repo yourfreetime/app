@@ -7,6 +7,8 @@ import { StackActions } from "@react-navigation/core";
 import style from "./FormPost.style";
 import Button from "../../components/Button";
 
+import { createPost } from "../../services/post";
+
 const FormPostScreen = ({ navigation }) => {
   const [text, setText] = useState("");
 
@@ -31,15 +33,13 @@ const FormPostScreen = ({ navigation }) => {
         variant="primary"
         title="Publicar"
         onPress={async () => {
-          firestore()
-            .collection("posts")
-            .add({
-              date: firestore.Timestamp.fromDate(new Date()),
-              author: firestore()
-                .collection("users")
-                .doc(firebase.auth().currentUser.uid),
-              text
-            });
+          await createPost({
+            author: firestore()
+              .collection("users")
+              .doc(firebase.auth().currentUser.uid),
+            text
+          });
+
           navigation.dispatch(StackActions.pop());
         }}
       />
