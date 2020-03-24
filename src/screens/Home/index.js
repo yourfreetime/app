@@ -3,6 +3,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import MaterialCIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import colors from "../../core/colors";
 
 import FeedScreen from "../Feed";
 import GlobalScreen from "../Global";
@@ -11,7 +12,15 @@ import UserScreen from "../User";
 const Tab = createBottomTabNavigator();
 
 const HomeScreen = () => (
-  <Tab.Navigator>
+  <Tab.Navigator
+    tabBarOptions={{
+      activeTintColor: colors.dark,
+      inactiveTintColor: colors.blueGreyDarken3,
+      indicatorStyle: { backgroundColor: colors.dark, top: 1 },
+      labelStyle: { fontSize: 10, marginTop: 0, marginBottom: 0 },
+      iconStyle: { marginBottom: 0, marginTop: 0 }
+    }}
+  >
     <Tab.Screen
       name="Feed"
       component={FeedScreen}

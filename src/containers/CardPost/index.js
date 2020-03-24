@@ -28,11 +28,14 @@ const CardPostComponent = ({ post }) => {
     <Card style={{ margin: 5, marginBottom: 16 }}>
       <TouchableOpacity
         style={style.rootTitle}
-        onPress={() =>
-          navigation
-            .dangerouslyGetParent()
-            .dispatch(StackActions.push("User", { userId: author.id }))
-        }
+        onPress={() => {
+          const objectDispatch =
+            navigation.dangerouslyGetParent() || navigation;
+
+          objectDispatch.dispatch(
+            StackActions.push("User", { userId: author.id })
+          );
+        }}
       >
         <Image style={style.userImage} source={{ uri: author.picture }} />
         <View style={style.contentTitle}>
