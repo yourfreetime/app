@@ -1,6 +1,25 @@
 import firestore from "@react-native-firebase/firestore";
 import firebase from "@react-native-firebase/app";
 
+export const allByUser = async userId => {
+  const userRef = firebase
+    .firestore()
+    .collection("users")
+    .doc(userId);
+
+  const querySnapshot = await firestore()
+    .collection("posts")
+    .where("author", "==", userRef)
+    // .orderBy("date", "desc")
+    .get();
+
+  return querySnapshot.docs.map(documentSnapshot => ({
+    ...documentSnapshot.data(),
+    id: documentSnapshot.id,
+    key: documentSnapshot.id
+  }));
+};
+
 export const createPost = async postObject => {
   await firestore()
     .collection("posts")

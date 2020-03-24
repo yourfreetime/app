@@ -6,7 +6,7 @@ import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 import FeedScreen from "../Feed";
 import GlobalScreen from "../Global";
-import UserAreaScreen from "../UserArea";
+import UserScreen from "../User";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,8 +33,8 @@ const HomeScreen = () => (
       }}
     />
     <Tab.Screen
-      name="UserArea"
-      component={UserAreaScreen}
+      name="User"
+      component={UserScreen}
       options={{
         title: "Eu",
         tabBarIcon: ({ color }) => (

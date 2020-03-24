@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Text, SafeAreaView, TouchableOpacity, FlatList } from "react-native";
+import {
+  Text,
+  SafeAreaView,
+  TouchableNativeFeedback,
+  FlatList
+} from "react-native";
 import { StackActions } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
 
@@ -32,13 +37,13 @@ const FeedScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={style.container}>
-      <TouchableOpacity
+      <TouchableNativeFeedback
         onPress={() => navigation.dispatch(StackActions.push("FormPost"))}
       >
         <Card style={{ marginBottom: 16 }}>
           <Text>O que você está fazendo no seu tempo livre?</Text>
         </Card>
-      </TouchableOpacity>
+      </TouchableNativeFeedback>
       <FlatList
         style={{ margin: -5 }}
         data={posts}
