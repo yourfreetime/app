@@ -11,21 +11,27 @@ import Button from "../../components/Button";
 import { getUser } from "../../services/user";
 import { allByUser } from "../../services/post";
 
-const UserScreen = ({ navigation }) => {
+const UserScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState();
-  const [posts, setPosts] = useState();
+  const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    const getData = async () => {
-      const result = await getUser(firebase.auth().currentUser.uid);
-      const docs = await allByUser(firebase.auth().currentUser.uid);
+    let userId = firebase.auth().currentUser.uid;
+    if (route && route.params && route.params.userId) {
+      userId = route.params.userId;
+    }
 
-      setPosts(docs);
+    const getData = async () => {
+      const result = await getUser(userId);
       setUser(result.data());
       setLoading(false);
     };
+
+    const unsubscribe = allByUser(userId, posts => setPosts(posts));
     getData();
+
+    return () => unsubscribe();
   }, []);
 
   if (loading) {

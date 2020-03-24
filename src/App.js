@@ -10,6 +10,7 @@ import colors from "./core/colors";
 import HomeScreen from "./screens/Home";
 import LoginScreen from "./screens/Login";
 import FormPostScreen from "./screens/FormPost";
+import UserScreen from "./screens/User";
 
 const Stack = createStackNavigator();
 
@@ -37,6 +38,7 @@ const App = () => (
           headerStyle: { backgroundColor: colors.background, elevation: 0 }
         }}
       />
+      <Stack.Screen name="User" component={UserScreen} />
     </Stack.Navigator>
   </NavigationContainer>
 );
