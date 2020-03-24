@@ -55,7 +55,7 @@ const CardPostComponent = ({ post, style: newStyle, isOpenDetail }) => {
       <Text style={style.text}>{post.text}</Text>
       <Divider />
       <Footer post={post} author={author} />
-      <MoreOptionsCard post={post} />
+      <MoreOptionsCard post={post} author={author} />
     </Card>
   );
 };

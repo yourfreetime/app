@@ -15,7 +15,7 @@ const FormPostScreen = ({ navigation, route }) => {
   const [text, setText] = useState("");
 
   useEffect(() => {
-    if (route) {
+    if (route.params) {
       setText(route.params.post.text);
     }
   }, []);
@@ -39,9 +39,9 @@ const FormPostScreen = ({ navigation, route }) => {
       />
       <Button
         variant="primary"
-        title={route ? "Atualizar" : "Enviar"}
+        title={route.params ? "Atualizar" : "Enviar"}
         onPress={async () => {
-          if (!route) {
+          if (!route.params) {
             await createPost({
               author: firestore()
                 .collection("users")

@@ -2,14 +2,14 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Alert } from "react-native";
 import { useNavigation, StackActions } from "@react-navigation/core";
+import { firebase } from "@react-native-firebase/auth";
 
 import MoreOptions from "../../../../components/MoreOptions";
 
 import { deletePost } from "../../../../services/post";
 
-const MoreOptionsCardComponent = ({ post }) => {
+const MoreOptionsCardComponent = ({ post, author }) => {
   const navigation = useNavigation();
-
   const objectDispatch = navigation.dangerouslyGetParent() || navigation;
 
   const onEdit = () => {
@@ -27,18 +27,26 @@ const MoreOptionsCardComponent = ({ post }) => {
       { cancelable: false }
     );
   };
+  let options = ["Salvar", "Denunciar"];
+  let actions = [() => {}, () => {}];
+
+  if (author.id === firebase.auth().currentUser.uid) {
+    options = ["Editar", "Excluir", ...options];
+    actions = [onEdit, onDelete, ...actions];
+  }
 
   return (
     <MoreOptions
       style={{ position: "absolute", right: 10, top: 15 }}
-      options={["Editar", "Excluir", "Salvar", "Denunciar"]}
-      actions={[onEdit, onDelete, () => {}, () => {}]}
+      options={options}
+      actions={actions}
     />
   );
 };
 
 MoreOptionsCardComponent.propTypes = {
-  post: PropTypes.object.isRequired
+  post: PropTypes.object.isRequired,
+  author: PropTypes.object.isRequired
 };
 
 export default MoreOptionsCardComponent;
