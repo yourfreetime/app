@@ -38,7 +38,14 @@ const App = () => (
           headerStyle: { backgroundColor: colors.background, elevation: 0 }
         }}
       />
-      <Stack.Screen name="User" component={UserScreen} />
+      <Stack.Screen
+        name="User"
+        component={UserScreen}
+        options={{
+          headerTitle: "",
+          headerStyle: { backgroundColor: colors.background, elevation: 0 }
+        }}
+      />
     </Stack.Navigator>
   </NavigationContainer>
 );

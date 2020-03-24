@@ -38,6 +38,13 @@ const UserScreen = ({ navigation, route }) => {
     return <Loader show />;
   }
 
+  let userId = firebase.auth().currentUser.uid;
+  if (route && route.params && route.params.userId) {
+    userId = route.params.userId;
+  }
+
+  const isMyUser = userId === firebase.auth().currentUser.uid;
+
   return (
     <SafeAreaView style={style.container}>
       <View style={style.userArea}>
@@ -45,20 +52,22 @@ const UserScreen = ({ navigation, route }) => {
         <Text style={style.userName}>{user.name}</Text>
       </View>
       <FlatList
-        style={{ margin: -5, marginBottom: 10 }}
+        style={{ margin: -5, marginBottom: isMyUser ? 10 : 0 }}
         data={posts}
         renderItem={({ item }) => <CardPost post={item} />}
       />
-      <Button
-        variant="primary"
-        title="Sair"
-        onPress={async () => {
-          firebase.auth().signOut();
-          navigation
-            .dangerouslyGetParent()
-            .dispatch(StackActions.replace("Login"));
-        }}
-      />
+      {isMyUser && (
+        <Button
+          variant="primary"
+          title="Sair"
+          onPress={async () => {
+            firebase.auth().signOut();
+            navigation
+              .dangerouslyGetParent()
+              .dispatch(StackActions.replace("Login"));
+          }}
+        />
+      )}
     </SafeAreaView>
   );
 };
