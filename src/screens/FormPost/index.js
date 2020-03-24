@@ -5,6 +5,7 @@ import firestore from "@react-native-firebase/firestore";
 import { StackActions } from "@react-navigation/core";
 
 import style from "./FormPost.style";
+
 import Button from "../../components/Button";
 import Root from "../../components/Root";
 

@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { View } from "react-native";
 import { firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
+import { useNavigation, StackActions } from "@react-navigation/core";
 
 import ButtonFooter from "../ButtonFooter";
 
@@ -10,13 +11,17 @@ import style from "./Footer.style";
 
 import { likePost, unlikePost } from "../../../../services/post";
 
-const FooterComponent = ({ post }) => {
+const FooterComponent = ({ post, author }) => {
+  const navigation = useNavigation();
+
   let like;
   if (post.likes) {
     like = post.likes.find(
       item => item.user.id === firebase.auth().currentUser.uid
     );
   }
+
+  const objectDispatch = navigation.dangerouslyGetParent() || navigation;
 
   return (
     <View style={style.buttons}>
@@ -36,13 +41,22 @@ const FooterComponent = ({ post }) => {
         text="Realçar"
         active={!!like}
       />
-      <ButtonFooter icon="reply" text="Responder" />
+      <ButtonFooter
+        onPress={() =>
+          objectDispatch.dispatch(
+            StackActions.push("FormComment", { post, author })
+          )
+        }
+        icon="reply"
+        text="Responder"
+      />
     </View>
   );
 };
 
 FooterComponent.propTypes = {
-  post: PropTypes.object
+  post: PropTypes.object,
+  author: PropTypes.object
 };
 
 export default FooterComponent;

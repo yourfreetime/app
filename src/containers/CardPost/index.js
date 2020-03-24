@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigation, StackActions } from "@react-navigation/core";
-import {
-  TouchableNativeFeedback,
-  TouchableOpacity,
-  Image,
-  Text,
-  View
-} from "react-native";
+import { TouchableOpacity, Image, Text, View } from "react-native";
 import moment from "moment";
 
 import style from "./CardPost.style";
@@ -59,7 +53,7 @@ const CardPostComponent = ({ post, style: newStyle, isOpenDetail }) => {
       <Divider />
       <Text style={style.text}>{post.text}</Text>
       <Divider />
-      <Footer post={post} />
+      <Footer post={post} author={author} />
     </Card>
   );
 };

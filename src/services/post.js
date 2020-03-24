@@ -57,7 +57,9 @@ export const likePost = async (postId, likeObject) => {
   await firestore()
     .collection("posts")
     .doc(postId)
-    .set({ likes: [newLikeObject] }, { merge: true });
+    .update({
+      likes: firebase.firestore.FieldValue.arrayUnion(newLikeObject)
+    });
 };
 
 export const unlikePost = async (postId, likeObject) => {
@@ -66,5 +68,19 @@ export const unlikePost = async (postId, likeObject) => {
     .doc(postId)
     .update({
       likes: firebase.firestore.FieldValue.arrayRemove(likeObject)
+    });
+};
+
+export const createComment = async (postId, commentObject) => {
+  const newCommentObject = {
+    ...commentObject,
+    date: firestore.Timestamp.fromDate(new Date())
+  };
+
+  await firestore()
+    .collection("posts")
+    .doc(postId)
+    .update({
+      comments: firebase.firestore.FieldValue.arrayUnion(newCommentObject)
     });
 };
