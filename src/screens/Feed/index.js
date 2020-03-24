@@ -5,7 +5,7 @@ import firestore from "@react-native-firebase/firestore";
 
 import style from "./Feed.style";
 import Card from "../../components/Card";
-import CardPost from "../../components/CardPost";
+import CardPost from "../../containers/CardPost";
 
 const FeedScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
@@ -22,6 +22,7 @@ const FeedScreen = ({ navigation }) => {
         setPosts(
           querySnapshot.docs.map(documentSnapshot => ({
             ...documentSnapshot.data(),
+            id: documentSnapshot.id,
             key: documentSnapshot.id
           }))
         );

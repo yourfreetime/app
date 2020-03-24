@@ -13,7 +13,9 @@ const UserAreaScreen = ({ navigation }) => (
       title="Sair"
       onPress={async () => {
         firebase.auth().signOut();
-        navigation.dispatch(StackActions.replace("Login"));
+        navigation
+          .dangerouslyGetParent()
+          .dispatch(StackActions.replace("Login"));
       }}
     />
   </View>
