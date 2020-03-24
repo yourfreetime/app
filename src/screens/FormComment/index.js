@@ -31,7 +31,7 @@ const FormCommentScreen = ({ navigation, route }) => {
         <TextInput
           style={style.input}
           textAlignVertical="top"
-          placeholder="Peça ou sugira algo para fazer no tempo livre..."
+          placeholder="Sugira algo para fazer..."
           multiline
           numberOfLines={4}
           onChangeText={newText => setText(newText)}

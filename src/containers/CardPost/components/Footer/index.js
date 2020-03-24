@@ -22,6 +22,8 @@ const FooterComponent = ({ post, author }) => {
   }
 
   const objectDispatch = navigation.dangerouslyGetParent() || navigation;
+  const countLikes = post.likes ? post.likes.length : 0;
+  const countComments = post.comments ? post.comments.length : 0;
 
   return (
     <View style={style.buttons}>
@@ -38,7 +40,7 @@ const FooterComponent = ({ post, author }) => {
           }
         }}
         icon="enhance"
-        text="Realçar"
+        text={`${countLikes} Realçar`}
         active={!!like}
       />
       <ButtonFooter
@@ -48,7 +50,7 @@ const FooterComponent = ({ post, author }) => {
           )
         }
         icon="reply"
-        text="Responder"
+        text={`${countComments} Responder`}
       />
     </View>
   );
