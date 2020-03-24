@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useNavigation, StackActions } from "@react-navigation/core";
-import { TouchableOpacity, Image, Text, View } from "react-native";
+import {
+  TouchableNativeFeedback,
+  TouchableOpacity,
+  Image,
+  Text,
+  View
+} from "react-native";
 import moment from "moment";
 
 import style from "./CardPost.style";
@@ -13,7 +19,7 @@ import Footer from "./components/Footer";
 const IMAGE_DEFAULT =
   "https://i6b8b4u5.stackpathcdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png";
 
-const CardPostComponent = ({ post }) => {
+const CardPostComponent = ({ post, style: newStyle, isOpenDetail }) => {
   const navigation = useNavigation();
   const [author, setAuthor] = useState({
     name: "",
@@ -24,14 +30,19 @@ const CardPostComponent = ({ post }) => {
     post.author.get().then(snap => setAuthor({ ...snap.data(), id: snap.id }));
   }, []);
 
+  const objectDispatch = navigation.dangerouslyGetParent() || navigation;
+
+  const openPost = () =>
+    objectDispatch.dispatch(StackActions.push("Post", { postId: post.id }));
+
   return (
-    <Card style={{ margin: 5, marginBottom: 16 }}>
+    <Card
+      onPress={isOpenDetail ? openPost : null}
+      style={[{ margin: 3, marginBottom: 16 }, newStyle]}
+    >
       <TouchableOpacity
         style={style.rootTitle}
         onPress={() => {
-          const objectDispatch =
-            navigation.dangerouslyGetParent() || navigation;
-
           objectDispatch.dispatch(
             StackActions.push("User", { userId: author.id })
           );
@@ -46,7 +57,7 @@ const CardPostComponent = ({ post }) => {
         </View>
       </TouchableOpacity>
       <Divider />
-      <Text>{post.text}</Text>
+      <Text style={style.text}>{post.text}</Text>
       <Divider />
       <Footer post={post} />
     </Card>
@@ -54,7 +65,12 @@ const CardPostComponent = ({ post }) => {
 };
 
 CardPostComponent.propTypes = {
-  post: PropTypes.object
+  post: PropTypes.object,
+  isOpenDetail: PropTypes.bool
+};
+
+CardPostComponent.defaultProps = {
+  isOpenDetail: true
 };
 
 export default CardPostComponent;

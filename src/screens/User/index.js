@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { StackActions } from "@react-navigation/native";
 import { firebase } from "@react-native-firebase/auth";
-import { Image, Text, SafeAreaView, FlatList, View } from "react-native";
+import { Image, Text, FlatList, View } from "react-native";
 
 import style from "./User.style";
 
 import CardPost from "../../containers/CardPost";
 import Loader from "../../components/Loader";
 import Button from "../../components/Button";
+import Root from "../../components/Root";
+
 import { getUser } from "../../services/user";
 import { allByUser } from "../../services/post";
 
@@ -28,8 +30,8 @@ const UserScreen = ({ navigation, route }) => {
       setLoading(false);
     };
 
-    const unsubscribe = allByUser(userId, posts => setPosts(posts));
     getData();
+    const unsubscribe = allByUser(userId, posts => setPosts(posts));
 
     return () => unsubscribe();
   }, []);
@@ -46,13 +48,13 @@ const UserScreen = ({ navigation, route }) => {
   const isMyUser = userId === firebase.auth().currentUser.uid;
 
   return (
-    <SafeAreaView style={style.container}>
+    <Root>
       <View style={style.userArea}>
         <Image style={style.userImage} source={{ uri: user.picture }} />
         <Text style={style.userName}>{user.name}</Text>
       </View>
       <FlatList
-        style={{ margin: -5, marginBottom: isMyUser ? 10 : 0 }}
+        style={{ margin: -3, marginBottom: isMyUser ? 10 : 0 }}
         data={posts}
         renderItem={({ item }) => <CardPost post={item} />}
       />
@@ -68,7 +70,7 @@ const UserScreen = ({ navigation, route }) => {
           }}
         />
       )}
-    </SafeAreaView>
+    </Root>
   );
 };
 

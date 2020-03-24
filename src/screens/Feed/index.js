@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  SafeAreaView,
-  TouchableNativeFeedback,
-  FlatList
-} from "react-native";
+import { Text, TouchableNativeFeedback, FlatList } from "react-native";
 import { StackActions } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
 
-import style from "./Feed.style";
 import Card from "../../components/Card";
+import Loader from "../../components/Loader";
 import CardPost from "../../containers/CardPost";
+import Root from "../../components/Root";
 
 const FeedScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
@@ -35,21 +31,24 @@ const FeedScreen = ({ navigation }) => {
     return () => unsubscribe();
   }, []);
 
+  if (loading) {
+    return <Loader show />;
+  }
+
   return (
-    <SafeAreaView style={style.container}>
-      <TouchableNativeFeedback
+    <Root>
+      <Card
         onPress={() => navigation.dispatch(StackActions.push("FormPost"))}
+        style={{ marginBottom: 16 }}
       >
-        <Card style={{ marginBottom: 16 }}>
-          <Text>O que você está fazendo no seu tempo livre?</Text>
-        </Card>
-      </TouchableNativeFeedback>
+        <Text>O que você está fazendo no seu tempo livre?</Text>
+      </Card>
       <FlatList
-        style={{ margin: -5 }}
+        style={{ margin: -3 }}
         data={posts}
         renderItem={({ item }) => <CardPost post={item} />}
       />
-    </SafeAreaView>
+    </Root>
   );
 };
 

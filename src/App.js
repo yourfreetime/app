@@ -11,6 +11,7 @@ import HomeScreen from "./screens/Home";
 import LoginScreen from "./screens/Login";
 import FormPostScreen from "./screens/FormPost";
 import UserScreen from "./screens/User";
+import PostScreen from "./screens/Post";
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,14 @@ const App = () => (
       <Stack.Screen
         name="User"
         component={UserScreen}
+        options={{
+          headerTitle: "",
+          headerStyle: { backgroundColor: colors.background, elevation: 0 }
+        }}
+      />
+      <Stack.Screen
+        name="Post"
+        component={PostScreen}
         options={{
           headerTitle: "",
           headerStyle: { backgroundColor: colors.background, elevation: 0 }

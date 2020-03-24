@@ -1,19 +1,12 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { Text } from "react-native";
+
+import Root from "../../components/Root";
 
 const GlobalScreen = () => (
-  <View style={styles.container}>
+  <Root>
     <Text>Global Screen</Text>
-  </View>
+  </Root>
 );
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
-  }
-});
 
 export default GlobalScreen;

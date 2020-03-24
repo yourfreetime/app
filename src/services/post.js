@@ -1,6 +1,21 @@
 import firestore from "@react-native-firebase/firestore";
 import firebase from "@react-native-firebase/app";
 
+export const getPost = (postId, callback) => {
+  const unsubscribe = firestore()
+    .collection("posts")
+    .doc(postId)
+    .onSnapshot(docSnapshot => {
+      callback({
+        ...docSnapshot.data(),
+        id: docSnapshot.id,
+        key: docSnapshot.id
+      });
+    });
+
+  return unsubscribe;
+};
+
 export const allByUser = (userId, callback) => {
   const userRef = firebase
     .firestore()

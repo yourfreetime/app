@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import colors from "../../core/colors";
 
 const style = StyleSheet.create({
   root: {
@@ -9,7 +10,8 @@ const style = StyleSheet.create({
     bottom: 0,
     zIndex: 9999,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
+    backgroundColor: colors.background
   },
   content: {
     backgroundColor: "rgba(0, 0, 0, 0.4)",
