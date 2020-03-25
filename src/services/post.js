@@ -25,7 +25,7 @@ export const allByUser = (userId, callback) => {
   const unsubscribe = firestore()
     .collection("posts")
     .where("author", "==", userRef)
-    // .orderBy("date", "desc")
+    .orderBy("date", "desc")
     .onSnapshot(querySnapshot => {
       const docs = querySnapshot.docs.map(documentSnapshot => ({
         ...documentSnapshot.data(),
@@ -67,7 +67,7 @@ export const allByLocation = async location => {
     );
   });
 
-  const posts = await newFirestore.get();
+  const posts = await newFirestore.orderBy("date", "desc").get();
 
   return posts.docs.map(documentSnapshot => ({
     ...documentSnapshot.data(),

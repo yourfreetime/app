@@ -14,7 +14,7 @@ import { allByLocation } from "../../services/post";
 
 const GlobalScreen = () => {
   const [posts, setPosts] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     Geolocation.getCurrentPosition(async info => {
