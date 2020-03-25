@@ -39,6 +39,43 @@ export const allByUser = (userId, callback) => {
   return unsubscribe;
 };
 
+export const allByLocation = async location => {
+  const max = new firestore.GeoPoint(
+    location.latitude + 10,
+    location.longitude + 10
+  );
+  const min = new firestore.GeoPoint(
+    location.latitude - 10,
+    location.longitude - 10
+  );
+
+  const users = await firestore()
+    .collection("users")
+    .where("position", "<=", max)
+    .where("position", ">=", min)
+    .get();
+
+  let newFirestore = firestore().collection("posts");
+
+  users.docs.map(item => {
+    newFirestore = newFirestore.where(
+      "author",
+      "==",
+      firestore()
+        .collection("users")
+        .doc(item.id)
+    );
+  });
+
+  const posts = await newFirestore.get();
+
+  return posts.docs.map(documentSnapshot => ({
+    ...documentSnapshot.data(),
+    id: documentSnapshot.id,
+    key: documentSnapshot.id
+  }));
+};
+
 export const createPost = async postObject => {
   await firestore()
     .collection("posts")

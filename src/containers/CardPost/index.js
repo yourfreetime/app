@@ -14,7 +14,7 @@ import Footer from "./components/Footer";
 const IMAGE_DEFAULT =
   "https://i6b8b4u5.stackpathcdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png";
 
-const CardPostComponent = ({ post, style: newStyle, isOpenDetail }) => {
+const CardPostComponent = ({ post, style: newStyle, isOpenDetail, simple }) => {
   const navigation = useNavigation();
   const [author, setAuthor] = useState({
     name: "",
@@ -53,20 +53,26 @@ const CardPostComponent = ({ post, style: newStyle, isOpenDetail }) => {
       </TouchableOpacity>
       <Divider />
       <Text style={style.text}>{post.text}</Text>
-      <Divider />
-      <Footer post={post} author={author} />
-      <MoreOptionsCard post={post} author={author} />
+      {!simple && (
+        <>
+          <Divider />
+          <Footer post={post} author={author} />
+          <MoreOptionsCard post={post} author={author} />
+        </>
+      )}
     </Card>
   );
 };
 
 CardPostComponent.propTypes = {
   post: PropTypes.object,
-  isOpenDetail: PropTypes.bool
+  isOpenDetail: PropTypes.bool,
+  simple: PropTypes.bool
 };
 
 CardPostComponent.defaultProps = {
-  isOpenDetail: true
+  isOpenDetail: true,
+  simple: false
 };
 
 export default CardPostComponent;
