@@ -8,6 +8,7 @@ import style from "./CardPost.style";
 
 import Card from "../../components/Card";
 import Divider from "../../components/Divider";
+import MoreOptionsCard from "./components/MoreOptionsCard";
 import Footer from "./components/Footer";
 
 const IMAGE_DEFAULT =
@@ -54,6 +55,7 @@ const CardPostComponent = ({ post, style: newStyle, isOpenDetail }) => {
       <Text style={style.text}>{post.text}</Text>
       <Divider />
       <Footer post={post} author={author} />
+      <MoreOptionsCard post={post} author={author} />
     </Card>
   );
 };

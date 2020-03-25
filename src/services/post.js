@@ -48,6 +48,20 @@ export const createPost = async postObject => {
     });
 };
 
+export const deletePost = async postId => {
+  await firestore()
+    .collection("posts")
+    .doc(postId)
+    .delete();
+};
+
+export const updatePost = async (postId, text) => {
+  await firestore()
+    .collection("posts")
+    .doc(postId)
+    .update({ text });
+};
+
 export const likePost = async (postId, likeObject) => {
   const newLikeObject = {
     ...likeObject,

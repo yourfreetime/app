@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image, Text, View, TextInput } from "react-native";
 import { firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
@@ -9,10 +9,16 @@ import style from "./FormPost.style";
 import Button from "../../components/Button";
 import Root from "../../components/Root";
 
-import { createPost } from "../../services/post";
+import { createPost, updatePost } from "../../services/post";
 
-const FormPostScreen = ({ navigation }) => {
+const FormPostScreen = ({ navigation, route }) => {
   const [text, setText] = useState("");
+
+  useEffect(() => {
+    if (route.params) {
+      setText(route.params.post.text);
+    }
+  }, []);
 
   const currentUser = firebase.auth().currentUser;
 
@@ -33,14 +39,18 @@ const FormPostScreen = ({ navigation }) => {
       />
       <Button
         variant="primary"
-        title="Publicar"
+        title={route.params ? "Atualizar" : "Enviar"}
         onPress={async () => {
-          await createPost({
-            author: firestore()
-              .collection("users")
-              .doc(firebase.auth().currentUser.uid),
-            text
-          });
+          if (!route.params) {
+            await createPost({
+              author: firestore()
+                .collection("users")
+                .doc(firebase.auth().currentUser.uid),
+              text
+            });
+          } else {
+            await updatePost(route.params.post.id, text);
+          }
 
           navigation.dispatch(StackActions.pop());
         }}

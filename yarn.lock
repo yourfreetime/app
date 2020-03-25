@@ -5499,6 +5499,11 @@ react-native-iphone-x-helper@^1.2.1:
   resolved "https://registry.yarnpkg.com/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz#645e2ffbbb49e80844bb4cbbe34a126fda1e6772"
   integrity sha512-/VbpIEp8tSNNHIvstuA3Swx610whci1Zpc9mqNkqn14DkMbw+ORviln2u0XyHG1kPvvwTNGZY6QpeFwxYaSdbQ==
 
+react-native-options-menu@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-options-menu/-/react-native-options-menu-2.0.2.tgz#ff4ed9a1ac0026e52097b33b3dd318fa14856564"
+  integrity sha512-aqufug1xxote2Oz9WTpoh/B4GTA1RZiF6Ba69yUZYyHvg7MdGnLVLMSA5fDRirF5EGCn2Ay+f9DExWf1DjQI6A==
+
 react-native-reanimated@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/react-native-reanimated/-/react-native-reanimated-1.7.0.tgz#896db2576552ac59d288a1f6c7f00afc171f240c"
