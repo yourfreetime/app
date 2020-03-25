@@ -25,7 +25,7 @@ const FormCommentScreen = ({ navigation, route }) => {
         <Image style={style.userImage} source={{ uri: author.picture }} />
         <Text style={style.textPost}>{post.text}</Text>
       </Card>
-      <Text style={{ marginTop: 16 }}>Sua resposta:</Text>
+      <Text style={style.titleAnswer}>Sua resposta:</Text>
       <View style={style.form}>
         <Image style={style.userImage} source={{ uri: currentUser.photoURL }} />
         <TextInput
