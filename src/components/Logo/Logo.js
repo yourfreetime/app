@@ -8,7 +8,7 @@ const Logo = () => (
     <Image
       resizeMode="contain"
       style={style.logo}
-      source={require("../../assets/logo.png")}
+      source={require("../../assets/logo-inverse.png")}
     />
   </View>
 );

@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { View, Text, TouchableNativeFeedback, Image } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 
@@ -9,6 +10,7 @@ const ButtonComponent = ({
   variant,
   onPress,
   iconColor,
+  size,
   startIcon: startIconProp
 }) => {
   const startIcon = startIconProp ? (
@@ -22,12 +24,23 @@ const ButtonComponent = ({
       onPress={onPress}
       background={TouchableNativeFeedback.SelectableBackground()}
     >
-      <View style={[style.root, style[variant]]}>
+      <View style={[style.root, style[variant], style[size]]}>
         {startIcon}
-        <Text style={[style.texte, style[`${variant}Text`]]}>{title}</Text>
+        <Text
+          style={[style.text, style[`${variant}Text`], style[`${size}Text`]]}
+        >
+          {title}
+        </Text>
       </View>
     </TouchableNativeFeedback>
   );
+};
+
+ButtonComponent.propTypes = {
+  title: PropTypes.string.isRequired,
+  onPress: PropTypes.func,
+  variant: PropTypes.oneOf(["primary", "active", "white"]),
+  size: PropTypes.oneOf(["large", "medium", "small"])
 };
 
 ButtonComponent.defaultProps = {

@@ -39,7 +39,6 @@ const App = () => {
       <StatusBar backgroundColor={colors.dark} barStyle="light-content" />
       <Stack.Navigator
         initialRouteName={firebase.auth().currentUser ? "Home" : "Login"}
-        screenOptions={{ headerStyle: { elevation: 0 } }}
       >
         <Stack.Screen
           name="Login"
@@ -51,8 +50,12 @@ const App = () => {
           component={HomeScreen}
           options={({ navigation }) => ({
             headerTitle: props => <Logo {...props} />,
-            headerStyle: { backgroundColor: colors.primary },
-            headerRight: props => (
+            headerStyle: {
+              backgroundColor: colors.white,
+              borderBottomWidth: 1,
+              borderBottomColor: colors.primary
+            },
+            headerRight: () => (
               <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
                 <UserAvatar />
               </TouchableOpacity>
@@ -64,7 +67,7 @@ const App = () => {
           component={FormPostScreen}
           options={{
             headerTitle: "",
-            headerStyle: { backgroundColor: colors.background }
+            headerStyle: { backgroundColor: colors.background, elevation: 0 }
           }}
         />
         <Stack.Screen
@@ -72,7 +75,7 @@ const App = () => {
           component={UserScreen}
           options={{
             headerTitle: "",
-            headerStyle: { backgroundColor: colors.background }
+            headerStyle: { backgroundColor: colors.background, elevation: 0 }
           }}
         />
         <Stack.Screen
@@ -80,7 +83,7 @@ const App = () => {
           component={SettingsScreen}
           options={{
             headerTitle: "",
-            headerStyle: { backgroundColor: colors.background }
+            headerStyle: { backgroundColor: colors.background, elevation: 0 }
           }}
         />
         <Stack.Screen
@@ -88,7 +91,7 @@ const App = () => {
           component={PostScreen}
           options={{
             headerTitle: "",
-            headerStyle: { backgroundColor: colors.background }
+            headerStyle: { backgroundColor: colors.background, elevation: 0 }
           }}
         />
         <Stack.Screen
@@ -96,7 +99,7 @@ const App = () => {
           component={FormCommentScreen}
           options={{
             headerTitle: "",
-            headerStyle: { backgroundColor: colors.background }
+            headerStyle: { backgroundColor: colors.background, elevation: 0 }
           }}
         />
       </Stack.Navigator>

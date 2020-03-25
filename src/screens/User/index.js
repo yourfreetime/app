@@ -13,8 +13,10 @@ import Root from "../../components/Root";
 import { getUser } from "../../services/user";
 import { allByUser } from "../../services/post";
 
-const UserScreen = ({ navigation, route }) => {
+const UserScreen = ({ route }) => {
   const [loading, setLoading] = useState(true);
+
+  const [user, setUser] = useState();
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -23,8 +25,14 @@ const UserScreen = ({ navigation, route }) => {
       userId = route.params.userId;
     }
 
-    const unsubscribe = allByUser(userId, posts => {
+    const getData = async () => {
+      const result = await getUser(userId);
+      setUser(result.data());
       setLoading(false);
+    };
+    getData();
+
+    const unsubscribe = allByUser(userId, posts => {
       setPosts(posts);
     });
 
@@ -34,9 +42,15 @@ const UserScreen = ({ navigation, route }) => {
   if (loading) {
     return <Loader show />;
   }
-
   return (
-    <Root>
+    <Root style={route.params ? { paddingTop: 0 } : {}}>
+      <View style={style.userArea}>
+        <Image style={style.userImage} source={{ uri: user.picture }} />
+        <View style={{ flex: 1 }}>
+          <Text style={style.userName}>{user.name}</Text>
+          <Button size="small" variant="white" title="Ouvir sugestões" />
+        </View>
+      </View>
       <FlatList
         style={{ margin: -3, marginBottom: 0 }}
         data={posts}

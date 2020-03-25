@@ -33,7 +33,13 @@ const style = StyleSheet.create({
   iconSizeMedium: {
     width: 20,
     height: 20
-  }
+  },
+  small: { paddingTop: 7, paddingBottom: 7 },
+  medium: { paddingTop: 15, paddingBottom: 15 },
+  large: { paddingTop: 22, paddingBottom: 22 },
+  smallText: { fontSize: 12 },
+  mediumText: { fontSize: 15 },
+  largeText: { fontSize: 18 }
 });
 
 export default style;

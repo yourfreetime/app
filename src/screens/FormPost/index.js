@@ -23,7 +23,7 @@ const FormPostScreen = ({ navigation, route }) => {
   const currentUser = firebase.auth().currentUser;
 
   return (
-    <Root>
+    <Root style={{ paddingTop: 0 }}>
       <View style={style.user}>
         <Image style={style.userImage} source={{ uri: currentUser.photoURL }} />
         <Text style={style.userName}>{currentUser.displayName}</Text>
