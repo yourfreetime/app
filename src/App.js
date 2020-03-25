@@ -16,6 +16,7 @@ import UserScreen from "./screens/User";
 import PostScreen from "./screens/Post";
 import SettingsScreen from "./screens/Settings";
 import FormCommentScreen from "./screens/FormComment";
+import PostSavesScreen from "./screens/PostSaves";
 
 import Logo from "./components/Logo";
 import UserAvatar from "./containers/UserAvatar";
@@ -101,6 +102,11 @@ const App = () => {
             headerTitle: "",
             headerStyle: { backgroundColor: colors.background, elevation: 0 }
           }}
+        />
+        <Stack.Screen
+          name="PostSaves"
+          component={PostSavesScreen}
+          options={{ headerTitle: "Salvos" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

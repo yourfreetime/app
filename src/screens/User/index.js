@@ -14,7 +14,7 @@ import Count from "./components/Count";
 import { getUser } from "../../services/user";
 import { allByUser } from "../../services/post";
 
-const UserScreen = ({ route }) => {
+const UserScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(true);
 
   const [user, setUser] = useState();
@@ -28,7 +28,7 @@ const UserScreen = ({ route }) => {
 
     const getData = async () => {
       const result = await getUser(userId);
-      setUser(result.data());
+      setUser({ ...result.data(), id: userId });
       setLoading(false);
     };
     getData();
@@ -53,7 +53,16 @@ const UserScreen = ({ route }) => {
         <View style={{ flex: 1, alignItems: "flex-start" }}>
           <View style={style.counts}>
             <Count count={posts.length} title="Publicações" icon="desk-lamp" />
-            <Count count={0} title="Salvos" icon="bookmark" />
+            <Count
+              count={user.saves ? user.saves.length : 0}
+              title="Salvos"
+              icon="bookmark"
+              onPress={() =>
+                navigation.dispatch(
+                  StackActions.push("PostSaves", { userId: user.id })
+                )
+              }
+            />
             <Count count={0} title="Amigos" icon="account-heart" />
           </View>
           <Button size="small" variant="white" title="Ouvir sugestões" />
