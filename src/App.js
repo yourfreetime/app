@@ -18,10 +18,11 @@ import SettingsScreen from "./screens/Settings";
 import FormCommentScreen from "./screens/FormComment";
 import PostSavesScreen from "./screens/PostSaves";
 
-import Logo from "./components/Logo";
+import Header from "./containers/Header";
 import UserAvatar from "./containers/UserAvatar";
 
 import { setUser } from "./services/user";
+import SearchScreen from "./screens/Search";
 
 const Stack = createStackNavigator();
 
@@ -50,7 +51,7 @@ const App = () => {
           name="Home"
           component={HomeScreen}
           options={({ navigation }) => ({
-            headerTitle: props => <Logo {...props} />,
+            headerTitle: props => <Header {...props} />,
             headerStyle: {
               backgroundColor: colors.white,
               borderBottomWidth: 1,
@@ -108,6 +109,7 @@ const App = () => {
           component={PostSavesScreen}
           options={{ headerTitle: "Salvos" }}
         />
+        <Stack.Screen name="Search" component={SearchScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
