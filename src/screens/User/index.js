@@ -35,32 +35,13 @@ const UserScreen = ({ navigation, route }) => {
     return <Loader show />;
   }
 
-  let userId = firebase.auth().currentUser.uid;
-  if (route && route.params && route.params.userId) {
-    userId = route.params.userId;
-  }
-
-  const isMyUser = userId === firebase.auth().currentUser.uid;
-
   return (
     <Root>
       <FlatList
-        style={{ margin: -3, marginBottom: isMyUser ? 10 : 0 }}
+        style={{ margin: -3, marginBottom: 0 }}
         data={posts}
         renderItem={({ item }) => <CardPost post={item} />}
       />
-      {isMyUser && (
-        <Button
-          variant="primary"
-          title="Sair"
-          onPress={async () => {
-            firebase.auth().signOut();
-            navigation
-              .dangerouslyGetParent()
-              .dispatch(StackActions.replace("Login"));
-          }}
-        />
-      )}
     </Root>
   );
 };

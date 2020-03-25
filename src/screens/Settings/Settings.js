@@ -17,9 +17,7 @@ const Settings = ({ navigation }) => {
           title="Sair"
           onPress={() => {
             firebase.auth().signOut();
-            navigation
-              .dangerouslyGetParent()
-              .dispatch(StackActions.replace("Login"));
+            navigation.dispatch(StackActions.replace("Login"));
           }}
         />
       )}
