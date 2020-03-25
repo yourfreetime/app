@@ -3,7 +3,7 @@ import colors from "../../../../core/colors";
 
 const style = StyleSheet.create({
   button: { flex: 1, alignItems: "center", flexDirection: "row" },
-  textButton: { fontSize: 17, marginLeft: 7 },
+  textButton: { fontSize: 15, marginLeft: 5, fontWeight: "bold" },
   textActive: { color: colors.dark }
 });
 

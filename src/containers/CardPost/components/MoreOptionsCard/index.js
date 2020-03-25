@@ -37,7 +37,7 @@ const MoreOptionsCardComponent = ({ post, author }) => {
 
   return (
     <MoreOptions
-      style={{ position: "absolute", right: 10, top: 15 }}
+      style={{ position: "absolute", right: 5, top: 10 }}
       options={options}
       actions={actions}
     />

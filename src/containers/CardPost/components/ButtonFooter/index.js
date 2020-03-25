@@ -12,8 +12,8 @@ const ButtonFooterComponent = ({ onPress, active, text, icon }) => {
   const color = active ? colors.dark : colors.blueGreyDarken3;
 
   const icons = {
-    enhance: <EntypoIcons name="aircraft" size={18} color={color} />,
-    reply: <FontAwesomeIcons name="comment" size={18} color={color} />
+    enhance: <EntypoIcons name="aircraft" size={16} color={color} />,
+    reply: <FontAwesomeIcons name="comment" size={16} color={color} />
   };
 
   const elementIcon = icons[icon];

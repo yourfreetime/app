@@ -4,7 +4,7 @@ import colors from "../../core/colors";
 const style = StyleSheet.create({
   root: {
     backgroundColor: colors.white,
-    padding: 16,
+    padding: 12,
     elevation: 1,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
