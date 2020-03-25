@@ -11,6 +11,7 @@ import Button from "../../components/Button";
 import Loader from "../../components/Loader";
 
 const LoginScreen = ({ navigation }) => {
+  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
   return (
@@ -27,34 +28,48 @@ const LoginScreen = ({ navigation }) => {
         iconColor="#3b5998"
         title="Login com o Facebook"
         onPress={async () => {
-          setLoading(true);
+          try {
+            setLoading(true);
 
-          await LoginManager.logInWithPermissions(["public_profile", "email"]);
-          const token = await AccessToken.getCurrentAccessToken();
-          const credential = firebase.auth.FacebookAuthProvider.credential(
-            token.accessToken
-          );
-          const user = await firebase.auth().signInWithCredential(credential);
+            const result = await LoginManager.logInWithPermissions([
+              "public_profile",
+              "email"
+            ]);
 
-          const dataUser = {
-            ...user.additionalUserInfo.profile,
-            picture: user.additionalUserInfo.profile.picture.data.url,
-            providerId: user.additionalUserInfo.providerId,
-            dateUpdated: firestore.Timestamp.fromDate(new Date())
-          };
+            if (result.isCancelled) {
+              throw new Error(
+                "Houve um erro ao efetuar o login com o Facebook."
+              );
+            }
 
-          if (user.additionalUserInfo.isNewUser) {
-            dataUser.dateCreated = firestore.Timestamp.fromDate(new Date());
+            const token = await AccessToken.getCurrentAccessToken();
+            const credential = firebase.auth.FacebookAuthProvider.credential(
+              token.accessToken
+            );
+            const user = await firebase.auth().signInWithCredential(credential);
+
+            const dataUser = {
+              ...user.additionalUserInfo.profile,
+              picture: user.additionalUserInfo.profile.picture.data.url,
+              providerId: user.additionalUserInfo.providerId,
+              dateUpdated: firestore.Timestamp.fromDate(new Date())
+            };
+
+            if (user.additionalUserInfo.isNewUser) {
+              dataUser.dateCreated = firestore.Timestamp.fromDate(new Date());
+            }
+
+            await firestore()
+              .collection("users")
+              .doc(user.user.uid)
+              .set(dataUser);
+
+            navigation.dispatch(StackActions.replace("Home"));
+          } catch (error) {
+            setError(error);
+          } finally {
+            setLoading(false);
           }
-
-          await firestore()
-            .collection("users")
-            .doc(user.user.uid)
-            .set(dataUser);
-
-          setLoading(false);
-
-          navigation.dispatch(StackActions.replace("Home"));
         }}
       />
     </SafeAreaView>

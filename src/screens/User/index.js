@@ -15,7 +15,6 @@ import { allByUser } from "../../services/post";
 
 const UserScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState();
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
@@ -24,14 +23,10 @@ const UserScreen = ({ navigation, route }) => {
       userId = route.params.userId;
     }
 
-    const getData = async () => {
-      const result = await getUser(userId);
-      setUser(result.data());
+    const unsubscribe = allByUser(userId, posts => {
       setLoading(false);
-    };
-
-    getData();
-    const unsubscribe = allByUser(userId, posts => setPosts(posts));
+      setPosts(posts);
+    });
 
     return () => unsubscribe();
   }, []);
@@ -49,10 +44,6 @@ const UserScreen = ({ navigation, route }) => {
 
   return (
     <Root>
-      <View style={style.userArea}>
-        <Image style={style.userImage} source={{ uri: user.picture }} />
-        <Text style={style.userName}>{user.name}</Text>
-      </View>
       <FlatList
         style={{ margin: -3, marginBottom: isMyUser ? 10 : 0 }}
         data={posts}

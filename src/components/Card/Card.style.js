@@ -6,7 +6,7 @@ const style = StyleSheet.create({
     backgroundColor: colors.white,
     // width: "100%",
     padding: 16,
-    elevation: 5,
+    elevation: 1,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.8,

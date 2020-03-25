@@ -1,5 +1,5 @@
 import React from "react";
-import { StatusBar } from "react-native";
+import { StatusBar, TouchableOpacity } from "react-native";
 import "react-native-gesture-handler";
 import { firebase } from "@react-native-firebase/auth";
 import { NavigationContainer } from "@react-navigation/native";
@@ -12,7 +12,11 @@ import LoginScreen from "./screens/Login";
 import FormPostScreen from "./screens/FormPost";
 import UserScreen from "./screens/User";
 import PostScreen from "./screens/Post";
+import SettingsScreen from "./screens/Settings";
 import FormCommentScreen from "./screens/FormComment";
+
+import Logo from "./components/Logo";
+import UserAvatar from "./containers/UserAvatar";
 
 const Stack = createStackNavigator();
 
@@ -30,7 +34,18 @@ const App = () => (
       <Stack.Screen
         name="Home"
         component={HomeScreen}
-        options={{ headerTitle: "Your Free Time" }}
+        options={({ navigation }) => ({
+          headerTitle: props => <Logo {...props} />,
+          headerStyle: {
+            backgroundColor: colors.primary,
+            elevation: 0
+          },
+          headerRight: props => (
+            <TouchableOpacity onPress={() => navigation.navigate("Settings")}>
+              <UserAvatar />
+            </TouchableOpacity>
+          )
+        })}
       />
       <Stack.Screen
         name="FormPost"
@@ -43,6 +58,14 @@ const App = () => (
       <Stack.Screen
         name="User"
         component={UserScreen}
+        options={{
+          headerTitle: "",
+          headerStyle: { backgroundColor: colors.background, elevation: 0 }
+        }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
         options={{
           headerTitle: "",
           headerStyle: { backgroundColor: colors.background, elevation: 0 }

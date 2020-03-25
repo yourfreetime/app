@@ -4,15 +4,13 @@ import { Image, Text, View } from "react-native";
 
 import style from "./CardComment.style";
 
+import Avatar from "../../components/Avatar";
 import Card from "../../components/Card";
-
-const IMAGE_DEFAULT =
-  "https://i6b8b4u5.stackpathcdn.com/wp-content/plugins/all-in-one-seo-pack/images/default-user-image.png";
 
 const CardCommentComponent = ({ comment }) => {
   const [author, setAuthor] = useState({
     name: "",
-    picture: IMAGE_DEFAULT
+    picture: null
   });
 
   useEffect(() => {
@@ -23,7 +21,7 @@ const CardCommentComponent = ({ comment }) => {
 
   return (
     <Card style={style.card}>
-      <Image style={style.userImage} source={{ uri: author.picture }} />
+      <Avatar picture={author.picture} />
       <View style={style.contentTitle}>
         <Text style={style.userName}>{author.name}</Text>
         <Text style={style.text}>{comment.text}</Text>
