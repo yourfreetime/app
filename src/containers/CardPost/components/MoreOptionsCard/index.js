@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { Alert, ToastAndroid } from "react-native";
 import { useNavigation, StackActions } from "@react-navigation/core";
 import { firebase } from "@react-native-firebase/auth";
+import { t } from "../../../../i18n";
 
 import MoreOptions from "../../../../components/MoreOptions";
 
@@ -22,20 +23,20 @@ const MoreOptionsCardComponent = ({ post, author }) => {
       "",
       "Tem certeza que deseja deletar essa sugestão?",
       [
-        { text: "Cancelar", style: "cancel" },
+        { text: t("CANCEL"), style: "cancel" },
         {
-          text: "Confirmar",
+          text: t("CONFIRM"),
           onPress: async () => {
             try {
               await deletePost(post.id);
               ToastAndroid.showWithGravity(
-                "Postagem deletada com sucesso",
+                t("SUCCESS_DELETE_POST"),
                 ToastAndroid.LONG,
                 ToastAndroid.BOTTOM
               );
             } catch {
               ToastAndroid.showWithGravity(
-                "Erro ao deletar postagem",
+                t("ERROR_DELETE_POST"),
                 ToastAndroid.LONG,
                 ToastAndroid.BOTTOM
               );
@@ -51,24 +52,24 @@ const MoreOptionsCardComponent = ({ post, author }) => {
     try {
       await savePost(firebase.auth().currentUser.uid, post.id);
       ToastAndroid.showWithGravity(
-        "Postagem salva com sucesso",
+        t("SUCCESS_SAVE_POST"),
         ToastAndroid.LONG,
         ToastAndroid.BOTTOM
       );
     } catch {
       ToastAndroid.showWithGravity(
-        "Erro ao salvar postagem",
+        t("ERROR_SAVE_POST"),
         ToastAndroid.LONG,
         ToastAndroid.BOTTOM
       );
     }
   };
 
-  let options = ["Salvar", "Denunciar"];
+  let options = [t("SAVE"), t("DENOUNCE")];
   let actions = [onSave, () => {}];
 
   if (author.id === firebase.auth().currentUser.uid) {
-    options = ["Editar", "Excluir", ...options];
+    options = [t("EDIT"), t("DELETE"), ...options];
     actions = [onEdit, onDelete, ...actions];
   }
 

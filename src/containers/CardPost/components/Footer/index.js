@@ -40,7 +40,7 @@ const FooterComponent = ({ post, author }) => {
           }
         }}
         icon="enhance"
-        text={`${countLikes} Realçar`}
+        text={`${countLikes} ${t("ENHANCE")}`}
         active={!!like}
       />
       <ButtonFooter
@@ -50,7 +50,7 @@ const FooterComponent = ({ post, author }) => {
           )
         }
         icon="reply"
-        text={`${countComments} Responder`}
+        text={`${countComments} ${t("ANSWER")}`}
       />
     </View>
   );
