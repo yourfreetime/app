@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StackActions } from "@react-navigation/native";
 import { firebase } from "@react-native-firebase/auth";
 import { Image, Text, FlatList, View } from "react-native";
+import { t } from "../../i18n";
 
 import style from "./User.style";
 
@@ -52,10 +53,14 @@ const UserScreen = ({ navigation, route }) => {
         </View>
         <View style={{ flex: 1, alignItems: "flex-start" }}>
           <View style={style.counts}>
-            <Count count={posts.length} title="Publicações" icon="desk-lamp" />
+            <Count
+              count={posts.length}
+              title={t("PUBLICATIONS")}
+              icon="desk-lamp"
+            />
             <Count
               count={user.saves ? user.saves.length : 0}
-              title="Salvos"
+              title={t("SAVED")}
               icon="bookmark"
               onPress={() =>
                 navigation.dispatch(
@@ -63,9 +68,9 @@ const UserScreen = ({ navigation, route }) => {
                 )
               }
             />
-            <Count count={0} title="Amigos" icon="account-heart" />
+            <Count count={0} title={t("CONNECTIONS")} icon="account-heart" />
           </View>
-          <Button size="small" variant="white" title="Ouvir sugestões" />
+          <Button size="small" variant="white" title={t("TO_CONNECT")} />
         </View>
       </View>
       <FlatList

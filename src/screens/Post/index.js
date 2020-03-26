@@ -30,7 +30,7 @@ const PostScreen = ({ route }) => {
   return (
     <Root style={{ paddingTop: 3 }}>
       <CardPost post={post} style={{ margin: 0 }} isOpenDetail={false} />
-      <Text style={style.title}>Respostas:</Text>
+      <Text style={style.title}>{t("ANSWERS")}</Text>
       <FlatList
         style={{ margin: -3 }}
         data={post.comments}

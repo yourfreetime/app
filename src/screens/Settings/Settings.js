@@ -2,6 +2,7 @@ import React from "react";
 import { Text, Button } from "react-native";
 import { StackActions } from "@react-navigation/native";
 import { firebase } from "@react-native-firebase/auth";
+import { t } from "../../i18n";
 
 import Root from "../../components/Root";
 
@@ -14,7 +15,7 @@ const Settings = ({ navigation }) => {
       {userId && (
         <Button
           variant="primary"
-          title="Sair"
+          title={t("EXIT")}
           onPress={() => {
             firebase.auth().signOut();
             navigation.dispatch(StackActions.replace("Login"));

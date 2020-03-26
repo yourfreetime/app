@@ -4,6 +4,7 @@ import firestore from "@react-native-firebase/firestore";
 import { StackActions } from "@react-navigation/native";
 import { firebase } from "@react-native-firebase/auth";
 import { AccessToken, LoginManager } from "react-native-fbsdk";
+import { t } from "../../i18n";
 
 import style from "./Login.style";
 
@@ -26,7 +27,7 @@ const LoginScreen = ({ navigation }) => {
         variant="white"
         startIcon="facebook"
         iconColor="#3b5998"
-        title="Login com o Facebook"
+        title={t("LOGIN_FACEBOOK")}
         onPress={async () => {
           try {
             setLoading(true);
@@ -37,9 +38,7 @@ const LoginScreen = ({ navigation }) => {
             ]);
 
             if (result.isCancelled) {
-              throw new Error(
-                "Houve um erro ao efetuar o login com o Facebook."
-              );
+              throw new Error(t("ERROR_LOGIN"));
             }
 
             const token = await AccessToken.getCurrentAccessToken();

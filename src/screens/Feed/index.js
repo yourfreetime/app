@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Text, TouchableNativeFeedback, FlatList } from "react-native";
+import { Text, FlatList } from "react-native";
 import { StackActions } from "@react-navigation/native";
 import firestore from "@react-native-firebase/firestore";
+
+import { t } from "../../i18n";
 
 import Card from "../../components/Card";
 import Loader from "../../components/Loader";
@@ -41,7 +43,7 @@ const FeedScreen = ({ navigation }) => {
         onPress={() => navigation.dispatch(StackActions.push("FormPost"))}
         style={{ marginBottom: 16 }}
       >
-        <Text>O que você está fazendo no seu tempo livre?</Text>
+        <Text>{t("PHRASE_FEED")}</Text>
       </Card>
       <FlatList
         style={{ margin: -3 }}

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FlatList, Text } from "react-native";
+import { t } from "../../i18n";
+
 import Geolocation from "@react-native-community/geolocation";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
@@ -32,7 +34,7 @@ const GlobalScreen = () => {
     <Root>
       <Card style={style.title}>
         <MaterialIcons name="access-point" size={25} style={style.icon} />
-        <Text>O que pessoas próximas fazem no tempo livre?</Text>
+        <Text>{t("PHRASE_RADAR")}</Text>
       </Card>
       <FlatList
         style={{ margin: -3 }}

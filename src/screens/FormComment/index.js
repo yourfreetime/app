@@ -5,6 +5,7 @@ import firestore from "@react-native-firebase/firestore";
 import { StackActions } from "@react-navigation/core";
 
 import style from "./FormComment.style";
+import { t } from "../../i18n";
 
 import Button from "../../components/Button";
 import Root from "../../components/Root";
@@ -25,13 +26,13 @@ const FormCommentScreen = ({ navigation, route }) => {
         <Image style={style.userImage} source={{ uri: author.picture }} />
         <Text style={style.textPost}>{post.text}</Text>
       </Card>
-      <Text style={style.titleAnswer}>Sua resposta:</Text>
+      <Text style={style.titleAnswer}>{t("YOUR_ANSWER")}</Text>
       <View style={style.form}>
         <Image style={style.userImage} source={{ uri: currentUser.photoURL }} />
         <TextInput
           style={style.input}
           textAlignVertical="top"
-          placeholder="Sugira algo para fazer..."
+          placeholder={t("PLACEHOLDER_COMMENT")}
           multiline
           numberOfLines={4}
           onChangeText={newText => setText(newText)}
@@ -40,7 +41,7 @@ const FormCommentScreen = ({ navigation, route }) => {
       </View>
       <Button
         variant="primary"
-        title="Responder"
+        title={t("ANSWER")}
         onPress={async () => {
           await createComment(post.id, {
             author: firestore()

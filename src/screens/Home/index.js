@@ -3,8 +3,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import MaterialCIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import colors from "../../core/colors";
 
+import { t } from "../../i18n";
+import colors from "../../core/colors";
 import FeedScreen from "../Feed";
 import GlobalScreen from "../Global";
 import UserScreen from "../User";
@@ -25,7 +26,7 @@ const HomeScreen = () => (
       name="Feed"
       component={FeedScreen}
       options={{
-        title: "Nosso tempo",
+        title: t("OUR_TIME"),
         tabBarIcon: ({ color }) => (
           <MaterialIcons name="toys" size={30} color={color} />
         )
@@ -35,7 +36,7 @@ const HomeScreen = () => (
       name="Global"
       component={GlobalScreen}
       options={{
-        title: "Próximo",
+        title: "Próximos",
         tabBarIcon: ({ color }) => (
           <MaterialCIcons name="access-point" size={30} color={color} />
         )
