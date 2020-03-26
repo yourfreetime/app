@@ -4,6 +4,7 @@ import { View } from "react-native";
 import { firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { useNavigation, StackActions } from "@react-navigation/core";
+import { t } from "../../../../i18n";
 
 import ButtonFooter from "../ButtonFooter";
 

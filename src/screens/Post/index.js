@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { FlatList, Text } from "react-native";
+import { t } from "../../i18n";
 
 import CardPost from "../../containers/CardPost";
 import Root from "../../components/Root";
