@@ -9,7 +9,7 @@ import colors from "../../../../core/colors";
 
 const CountComponent = ({ icon, title, count, onPress }) => {
   const component = (
-    <View style={style.root}>
+    <>
       <View style={style.rootCount}>
         <MaterialIcons color={colors.blueGreyDarken3} name={icon} size={20} />
         <Text style={style.count}>{count}</Text>
@@ -17,14 +17,18 @@ const CountComponent = ({ icon, title, count, onPress }) => {
       <Text style={style.title} numberOfLines={2} ellipsizeMode="tail">
         {title}
       </Text>
-    </View>
+    </>
   );
 
   if (onPress) {
-    return <TouchableOpacity onPress={onPress}>{component}</TouchableOpacity>;
+    return (
+      <TouchableOpacity style={style.root} onPress={onPress}>
+        {component}
+      </TouchableOpacity>
+    );
   }
 
-  return component;
+  return <View style={style.root}>{component}</View>;
 };
 
 CountComponent.propTypes = {

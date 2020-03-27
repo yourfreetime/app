@@ -6,6 +6,7 @@ import { firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
+import { t } from "./src/i18n";
 
 import colors from "./src/core/colors";
 
@@ -23,6 +24,7 @@ import UserAvatar from "./src/containers/UserAvatar";
 
 import { setUser } from "./src/services/user";
 import SearchScreen from "./src/screens/Search";
+import FollowersScreen from "./src/screens/Followers";
 
 const Stack = createStackNavigator();
 
@@ -107,7 +109,12 @@ const App = () => {
         <Stack.Screen
           name="PostSaves"
           component={PostSavesScreen}
-          options={{ headerTitle: "Salvos" }}
+          options={{ headerTitle: t("SAVED") }}
+        />
+        <Stack.Screen
+          name="Followers"
+          component={FollowersScreen}
+          options={{ headerTitle: t("FOLLOWERS") }}
         />
         <Stack.Screen name="Search" component={SearchScreen} />
       </Stack.Navigator>

@@ -85,6 +85,11 @@ const UserScreen = ({ navigation, route }) => {
               count={countFollow}
               title={t("FOLLOWERS")}
               icon="account-heart"
+              onPress={() =>
+                navigation.dispatch(
+                  StackActions.push("Followers", { userId: user.id })
+                )
+              }
             />
           </View>
           {route.params &&
