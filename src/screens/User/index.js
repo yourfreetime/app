@@ -33,6 +33,9 @@ const UserScreen = ({ navigation, route }) => {
     const getData = async () => {
       const result = await getUser(userId);
       setUser({ ...result.data(), id: userId });
+
+      navigation.setOptions({ headerTitle: result.data().name });
+
       setLoading(false);
     };
     getData();
@@ -60,7 +63,6 @@ const UserScreen = ({ navigation, route }) => {
       <View style={style.userArea}>
         <View style={{ alignItems: "center", marginRight: 16, flex: 0.5 }}>
           <Image style={style.userImage} source={{ uri: user.picture }} />
-          <Text style={style.userName}>{user.name}</Text>
         </View>
         <View style={{ flex: 1, alignItems: "flex-start" }}>
           <View style={style.counts}>
@@ -85,26 +87,27 @@ const UserScreen = ({ navigation, route }) => {
               icon="account-heart"
             />
           </View>
-          {route.params && (
-            <Button
-              onPress={async () => {
-                if (!isFollow) {
-                  await createFollow(
-                    firebase.auth().currentUser.uid,
-                    route.params.userId
-                  );
-                } else {
-                  await removeFollow(
-                    firebase.auth().currentUser.uid,
-                    route.params.userId
-                  );
-                }
-              }}
-              size="small"
-              variant="white"
-              title={isFollow ? t("FOLLOWING") : t("FOLLOW")}
-            />
-          )}
+          {route.params &&
+            route.params.userId !== firebase.auth().currentUser.uid && (
+              <Button
+                onPress={async () => {
+                  if (!isFollow) {
+                    await createFollow(
+                      firebase.auth().currentUser.uid,
+                      route.params.userId
+                    );
+                  } else {
+                    await removeFollow(
+                      firebase.auth().currentUser.uid,
+                      route.params.userId
+                    );
+                  }
+                }}
+                size="small"
+                variant="white"
+                title={isFollow ? t("FOLLOWING") : t("FOLLOW")}
+              />
+            )}
         </View>
       </View>
       <FlatList
