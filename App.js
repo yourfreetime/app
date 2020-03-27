@@ -7,22 +7,22 @@ import firestore from "@react-native-firebase/firestore";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import colors from "./core/colors";
+import colors from "./src/core/colors";
 
-import HomeScreen from "./screens/Home";
-import LoginScreen from "./screens/Login";
-import FormPostScreen from "./screens/FormPost";
-import UserScreen from "./screens/User";
-import PostScreen from "./screens/Post";
-import SettingsScreen from "./screens/Settings";
-import FormCommentScreen from "./screens/FormComment";
-import PostSavesScreen from "./screens/PostSaves";
+import HomeScreen from "./src/screens/Home";
+import LoginScreen from "./src/screens/Login";
+import FormPostScreen from "./src/screens/FormPost";
+import UserScreen from "./src/screens/User";
+import PostScreen from "./src/screens/Post";
+import SettingsScreen from "./src/screens/Settings";
+import FormCommentScreen from "./src/screens/FormComment";
+import PostSavesScreen from "./src/screens/PostSaves";
 
-import Header from "./containers/Header";
-import UserAvatar from "./containers/UserAvatar";
+import Header from "./src/containers/Header";
+import UserAvatar from "./src/containers/UserAvatar";
 
-import { setUser } from "./services/user";
-import SearchScreen from "./screens/Search";
+import { setUser } from "./src/services/user";
+import SearchScreen from "./src/screens/Search";
 
 const Stack = createStackNavigator();
 

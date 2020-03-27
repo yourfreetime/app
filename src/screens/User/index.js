@@ -14,6 +14,7 @@ import Count from "./components/Count";
 
 import { getUser } from "../../services/user";
 import { allByUser } from "../../services/post";
+import { createFollow } from "../../services/follow";
 
 const UserScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(true);
@@ -70,7 +71,17 @@ const UserScreen = ({ navigation, route }) => {
             />
             <Count count={0} title={t("CONNECTIONS")} icon="account-heart" />
           </View>
-          <Button size="small" variant="white" title={t("TO_CONNECT")} />
+          <Button
+            onPress={async () => {
+              await createFollow(
+                firebase.auth().currentUser.uid,
+                route.params.userId
+              );
+            }}
+            size="small"
+            variant="white"
+            title={t("TO_CONNECT")}
+          />
         </View>
       </View>
       <FlatList
