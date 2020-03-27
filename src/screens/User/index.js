@@ -14,13 +14,15 @@ import Count from "./components/Count";
 
 import { getUser } from "../../services/user";
 import { allByUser } from "../../services/post";
-import { createFollow } from "../../services/follow";
+import { createFollow, removeFollow, listFollow } from "../../services/follow";
 
 const UserScreen = ({ navigation, route }) => {
   const [loading, setLoading] = useState(true);
-
   const [user, setUser] = useState();
   const [posts, setPosts] = useState([]);
+
+  const [countFollow, setCountFollow] = useState(0);
+  const [isFollow, setIsFollow] = useState(false);
 
   useEffect(() => {
     let userId = firebase.auth().currentUser.uid;
@@ -39,7 +41,15 @@ const UserScreen = ({ navigation, route }) => {
       setPosts(posts);
     });
 
-    return () => unsubscribe();
+    const unsubscribeFollow = listFollow(userId, (followers, newIsFollow) => {
+      setCountFollow(followers.length);
+      setIsFollow(newIsFollow);
+    });
+
+    return () => {
+      unsubscribe();
+      unsubscribeFollow();
+    };
   }, []);
 
   if (loading) {
@@ -69,19 +79,32 @@ const UserScreen = ({ navigation, route }) => {
                 )
               }
             />
-            <Count count={0} title={t("CONNECTIONS")} icon="account-heart" />
+            <Count
+              count={countFollow}
+              title={t("FOLLOWERS")}
+              icon="account-heart"
+            />
           </View>
-          <Button
-            onPress={async () => {
-              await createFollow(
-                firebase.auth().currentUser.uid,
-                route.params.userId
-              );
-            }}
-            size="small"
-            variant="white"
-            title={t("TO_CONNECT")}
-          />
+          {route.params && (
+            <Button
+              onPress={async () => {
+                if (!isFollow) {
+                  await createFollow(
+                    firebase.auth().currentUser.uid,
+                    route.params.userId
+                  );
+                } else {
+                  await removeFollow(
+                    firebase.auth().currentUser.uid,
+                    route.params.userId
+                  );
+                }
+              }}
+              size="small"
+              variant="white"
+              title={isFollow ? t("FOLLOWING") : t("FOLLOW")}
+            />
+          )}
         </View>
       </View>
       <FlatList
