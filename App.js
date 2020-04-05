@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Geolocation from "@react-native-community/geolocation";
-import { StatusBar, TouchableOpacity } from "react-native";
+import { StatusBar, TouchableOpacity, PermissionsAndroid } from "react-native";
 import "react-native-gesture-handler";
 import { firebase } from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
@@ -29,13 +29,31 @@ import FollowersScreen from "./src/screens/Followers";
 const Stack = createStackNavigator();
 
 const App = () => {
-  Geolocation.watchPosition(async info => {
-    await setUser(firebase.auth().currentUser.uid, {
-      position: new firestore.GeoPoint(
-        info.coords.latitude,
-        info.coords.longitude
-      )
-    });
+  useEffect(() => {
+    let watchId = null;
+
+    const runLocation = async () => {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION
+      );
+
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        watchId = Geolocation.watchPosition(async info => {
+          await setUser(firebase.auth().currentUser.uid, {
+            position: new firestore.GeoPoint(
+              info.coords.latitude,
+              info.coords.longitude
+            )
+          });
+        });
+      }
+    };
+
+    runLocation();
+
+    return () => {
+      if (watchId) Geolocation.clearWatch(watchId);
+    };
   });
 
   return (
