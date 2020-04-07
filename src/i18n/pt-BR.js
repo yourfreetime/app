@@ -30,7 +30,9 @@ export default {
   PLACEHOLDER_POST: "Peça ou sugira algo para fazer no tempo livre...",
   SEND: "Enviar",
   UPDATE: "Atualizar",
-  LOGIN_FACEBOOK: "Login com o Facebook",
-  ERROR_LOGIN: "Houve um erro ao efetuar o login com o Facebook.",
-  USERS: "Usuários"
+  REQUIRED_FIELDS: "Campos obrigatórios não foram preenchidos!!!",
+  EMAIL: "E-mail",
+  PASSWORD: "Senha",
+  USERS: "Usuários",
+  LOGIN: "Entrar"
 };

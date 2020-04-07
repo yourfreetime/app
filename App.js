@@ -39,12 +39,14 @@ const App = () => {
 
       if (granted === PermissionsAndroid.RESULTS.GRANTED) {
         watchId = Geolocation.watchPosition(async info => {
-          await setUser(firebase.auth().currentUser.uid, {
-            position: new firestore.GeoPoint(
-              info.coords.latitude,
-              info.coords.longitude
-            )
-          });
+          if (firebase.auth().currentUser) {
+            await setUser(firebase.auth().currentUser.uid, {
+              position: new firestore.GeoPoint(
+                info.coords.latitude,
+                info.coords.longitude
+              )
+            });
+          }
         });
       }
     };

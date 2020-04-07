@@ -1,76 +1,86 @@
 import React, { useState } from "react";
-import { Image, SafeAreaView } from "react-native";
-import firestore from "@react-native-firebase/firestore";
+import {
+  Image,
+  SafeAreaView,
+  TextInput,
+  ScrollView,
+  ToastAndroid
+} from "react-native";
 import { StackActions } from "@react-navigation/native";
 import { firebase } from "@react-native-firebase/auth";
-import { AccessToken, LoginManager } from "react-native-fbsdk";
 import { t } from "../../i18n";
 
 import style from "./Login.style";
 
 import Button from "../../components/Button";
 import Loader from "../../components/Loader";
+import colors from "../../core/colors";
 
 const LoginScreen = ({ navigation }) => {
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   return (
     <SafeAreaView style={style.container}>
-      <Loader show={loading} background="transparent" />
-      <Image
-        resizeMode="contain"
-        source={require("../../assets/logo.png")}
-        style={style.logo}
-      />
-      <Button
-        variant="white"
-        startIcon="facebook"
-        iconColor="#3b5998"
-        title={t("LOGIN_FACEBOOK")}
-        onPress={async () => {
-          try {
-            setLoading(true);
+      <ScrollView contentContainerStyle={style.scroll}>
+        <Loader show={loading} background="transparent" />
+        <Image
+          resizeMode="contain"
+          source={require("../../assets/logo.png")}
+          style={style.logo}
+        />
+        <TextInput
+          placeholder={t("EMAIL")}
+          underlineColorAndroid={colors.white}
+          onChangeText={text => setEmail(text)}
+          value={email}
+          placeholderTextColor={colors.white}
+          textContentType="emailAddress"
+          style={style.input}
+        />
+        <TextInput
+          placeholder={t("PASSWORD")}
+          underlineColorAndroid={colors.white}
+          onChangeText={text => setPassword(text)}
+          value={password}
+          placeholderTextColor={colors.white}
+          textContentType="password"
+          secureTextEntry
+          style={style.input}
+        />
+        <Button
+          variant="white"
+          title={t("LOGIN")}
+          onPress={async () => {
+            if (!email || !password) {
+              ToastAndroid.showWithGravity(
+                t("REQUIRED_FIELDS"),
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+              );
+            } else {
+              try {
+                setLoading(true);
 
-            const result = await LoginManager.logInWithPermissions([
-              "public_profile",
-              "email"
-            ]);
+                await firebase
+                  .auth()
+                  .signInWithEmailAndPassword(email, password);
 
-            if (result.isCancelled) {
-              throw new Error(t("ERROR_LOGIN"));
+                navigation.dispatch(StackActions.replace("Home"));
+              } catch (error) {
+                ToastAndroid.showWithGravity(
+                  error.message,
+                  ToastAndroid.LONG,
+                  ToastAndroid.BOTTOM
+                );
+              } finally {
+                setLoading(false);
+              }
             }
-
-            const token = await AccessToken.getCurrentAccessToken();
-            const credential = firebase.auth.FacebookAuthProvider.credential(
-              token.accessToken
-            );
-            const user = await firebase.auth().signInWithCredential(credential);
-
-            const dataUser = {
-              ...user.additionalUserInfo.profile,
-              picture: user.additionalUserInfo.profile.picture.data.url,
-              providerId: user.additionalUserInfo.providerId,
-              dateUpdated: firestore.Timestamp.fromDate(new Date())
-            };
-
-            if (user.additionalUserInfo.isNewUser) {
-              dataUser.dateCreated = firestore.Timestamp.fromDate(new Date());
-            }
-
-            await firestore()
-              .collection("users")
-              .doc(user.user.uid)
-              .set(dataUser);
-
-            navigation.dispatch(StackActions.replace("Home"));
-          } catch (error) {
-            setError(error);
-          } finally {
-            setLoading(false);
-          }
-        }}
-      />
+          }}
+        />
+      </ScrollView>
     </SafeAreaView>
   );
 };
