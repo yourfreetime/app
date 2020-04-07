@@ -8,7 +8,7 @@ import style from "./CardUser.style";
 import Avatar from "../../components/Avatar";
 import Card from "../../components/Card";
 
-const CardUserComponent = ({ userId, user: userExist }) => {
+const CardUserComponent = ({ userRef, user: userExist }) => {
   const navigation = useNavigation();
 
   const [user, setUser] = useState({
@@ -20,7 +20,7 @@ const CardUserComponent = ({ userId, user: userExist }) => {
     if (userExist) {
       setUser(userExist);
     } else {
-      userId.get().then(snap => setUser({ ...snap.data(), id: snap.id }));
+      userRef.get().then(snap => setUser({ ...snap.data(), id: snap.id }));
     }
   }, []);
 
@@ -39,7 +39,7 @@ const CardUserComponent = ({ userId, user: userExist }) => {
 };
 
 CardUserComponent.propTypes = {
-  userId: PropTypes.string,
+  userRef: PropTypes.object,
   user: PropTypes.object
 };
 

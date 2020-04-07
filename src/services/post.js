@@ -18,6 +18,25 @@ export const allPosts = callback => {
   return unsubscribe;
 };
 
+export const searchPosts = (search, callback) => {
+  console.log("Search:", search);
+  const unsubscribe = firestore()
+    .collection("posts")
+    .where("text", ">=", search)
+    .where("text", "<=", search + "\uf8ff")
+    .onSnapshot(querySnapshot => {
+      callback(
+        querySnapshot.docs.map(documentSnapshot => ({
+          ...documentSnapshot.data(),
+          id: documentSnapshot.id,
+          key: documentSnapshot.id
+        }))
+      );
+    });
+
+  return unsubscribe;
+};
+
 export const getPost = (postId, callback) => {
   const unsubscribe = firestore()
     .collection("posts")

@@ -37,6 +37,7 @@ const FormPostScreen = ({ navigation, route }) => {
         numberOfLines={4}
         onChangeText={newText => setText(newText)}
         value={text}
+        autoFocus
       />
       <Button
         variant="primary"

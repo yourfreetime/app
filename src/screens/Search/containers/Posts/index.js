@@ -5,22 +5,22 @@ import CardPost from "../../../../containers/CardPost";
 import Root from "../../../../components/Root";
 import Loader from "../../../../components/Loader";
 
-import { allPosts } from "../../../../services/post";
+import { searchPosts } from "../../../../services/post";
 
-const PostsContainer = () => {
+const PostsContainer = ({ search }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
 
-    const unsubscribe = allPosts(posts => {
+    const unsubscribe = searchPosts(search, posts => {
       setPosts(posts);
       setLoading(false);
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [search]);
 
   if (loading) {
     return <Loader show />;

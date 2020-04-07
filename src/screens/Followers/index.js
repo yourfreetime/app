@@ -29,7 +29,7 @@ const FollowersScreen = ({ route }) => {
       <FlatList
         style={{ margin: -3 }}
         data={followers}
-        renderItem={({ item }) => <CardUser userId={item.data().user} />}
+        renderItem={({ item }) => <CardUser userRef={item.data().user} />}
       />
     </Root>
   );

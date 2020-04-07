@@ -23,6 +23,7 @@ const SearchScreen = ({ navigation }) => {
         numberOfLines={1}
         textAlignVertical="top"
         placeholder={t("SEARCH")}
+        autoFocus
         onChangeText={newText => debounce(() => setText(newText), 500)}
       />
     )
