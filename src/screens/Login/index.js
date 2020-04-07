@@ -17,7 +17,7 @@ const LoginScreen = ({ navigation }) => {
 
   return (
     <SafeAreaView style={style.container}>
-      <Loader show={loading} />
+      <Loader show={loading} background="transparent" />
       <Image
         resizeMode="contain"
         source={require("../../assets/logo.png")}

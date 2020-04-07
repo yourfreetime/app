@@ -4,9 +4,11 @@ import { View, ActivityIndicator } from "react-native";
 
 import style from "./Loader.style";
 
-const LoaderComponent = ({ show }) =>
+const LoaderComponent = ({ show, background }) =>
   show ? (
-    <View style={style.root}>
+    <View
+      style={[style.root, background ? { backgroundColor: background } : {}]}
+    >
       <View style={style.content}>
         <ActivityIndicator color="white" />
       </View>
@@ -16,7 +18,8 @@ const LoaderComponent = ({ show }) =>
   );
 
 LoaderComponent.propTypes = {
-  show: PropTypes.bool
+  show: PropTypes.bool,
+  background: PropTypes.string
 };
 
 LoaderComponent.defaultProps = {

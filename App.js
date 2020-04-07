@@ -134,7 +134,13 @@ const App = () => {
           component={FollowersScreen}
           options={{ headerTitle: t("FOLLOWERS") }}
         />
-        <Stack.Screen name="Search" component={SearchScreen} />
+        <Stack.Screen
+          name="Search"
+          component={SearchScreen}
+          options={{
+            headerStyle: { elevation: 0 }
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
