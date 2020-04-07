@@ -3,12 +3,12 @@ import PropTypes from "prop-types";
 import { Text, TouchableNativeFeedback } from "react-native";
 import { useNavigation, StackActions } from "@react-navigation/core";
 
-import style from "./CardFollow.style";
+import style from "./CardUser.style";
 
-import Avatar from "../../../../components/Avatar";
-import Card from "../../../../components/Card";
+import Avatar from "../../components/Avatar";
+import Card from "../../components/Card";
 
-const CardFollowComponent = ({ userId }) => {
+const CardUserComponent = ({ userId, user: userExist }) => {
   const navigation = useNavigation();
 
   const [user, setUser] = useState({
@@ -17,7 +17,11 @@ const CardFollowComponent = ({ userId }) => {
   });
 
   useEffect(() => {
-    userId.get().then(snap => setUser({ ...snap.data(), id: snap.id }));
+    if (userExist) {
+      setUser(userExist);
+    } else {
+      userId.get().then(snap => setUser({ ...snap.data(), id: snap.id }));
+    }
   }, []);
 
   return (
@@ -34,8 +38,9 @@ const CardFollowComponent = ({ userId }) => {
   );
 };
 
-CardFollowComponent.propTypes = {
-  comment: PropTypes.object
+CardUserComponent.propTypes = {
+  userId: PropTypes.string,
+  user: PropTypes.object
 };
 
-export default CardFollowComponent;
+export default CardUserComponent;

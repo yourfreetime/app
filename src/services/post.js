@@ -1,6 +1,23 @@
 import firestore from "@react-native-firebase/firestore";
 import firebase from "@react-native-firebase/app";
 
+export const allPosts = callback => {
+  const unsubscribe = firestore()
+    .collection("posts")
+    .orderBy("date", "desc")
+    .onSnapshot(querySnapshot => {
+      callback(
+        querySnapshot.docs.map(documentSnapshot => ({
+          ...documentSnapshot.data(),
+          id: documentSnapshot.id,
+          key: documentSnapshot.id
+        }))
+      );
+    });
+
+  return unsubscribe;
+};
+
 export const getPost = (postId, callback) => {
   const unsubscribe = firestore()
     .collection("posts")

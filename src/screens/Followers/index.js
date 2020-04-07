@@ -3,7 +3,7 @@ import { FlatList } from "react-native";
 
 import Root from "../../components/Root";
 import Loader from "../../components/Loader";
-import CardFollow from "./components/CardFollow";
+import CardUser from "../../containers/CardUser";
 
 import { listFollow } from "../../services/follow";
 
@@ -29,7 +29,7 @@ const FollowersScreen = ({ route }) => {
       <FlatList
         style={{ margin: -3 }}
         data={followers}
-        renderItem={({ item }) => <CardFollow userId={item.data().user} />}
+        renderItem={({ item }) => <CardUser userId={item.data().user} />}
       />
     </Root>
   );

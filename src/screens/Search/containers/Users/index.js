@@ -1,8 +1,40 @@
-import React from "react";
-import { View } from "react-native";
+import React, { useState, useEffect } from "react";
+import { FlatList } from "react-native";
 
-const UsersContainer = () => (
-  <View style={{ flex: 1, backgroundColor: "#ff4081" }} />
-);
+import CardUser from "../../../../containers/CardUser";
+import Root from "../../../../components/Root";
+import Loader from "../../../../components/Loader";
+
+import { allUsers } from "../../../../services/user";
+
+const UsersContainer = () => {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setLoading(true);
+
+    const unsubscribe = allUsers(users => {
+      setUsers(users);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) {
+    return <Loader show />;
+  }
+
+  return (
+    <Root>
+      <FlatList
+        style={{ margin: -3 }}
+        data={users}
+        renderItem={({ item }) => <CardUser user={item} />}
+      />
+    </Root>
+  );
+};
 
 export default UsersContainer;

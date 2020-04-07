@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Text, FlatList } from "react-native";
 import { StackActions } from "@react-navigation/native";
-import firestore from "@react-native-firebase/firestore";
 
 import { t } from "../../i18n";
 
@@ -10,6 +9,8 @@ import Loader from "../../components/Loader";
 import CardPost from "../../containers/CardPost";
 import Root from "../../components/Root";
 
+import { allPosts } from "../../services/post";
+
 const FeedScreen = ({ navigation }) => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -17,19 +18,11 @@ const FeedScreen = ({ navigation }) => {
   useEffect(() => {
     setLoading(true);
 
-    const unsubscribe = firestore()
-      .collection("posts")
-      .orderBy("date", "desc")
-      .onSnapshot(async querySnapshot => {
-        setLoading(false);
-        setPosts(
-          querySnapshot.docs.map(documentSnapshot => ({
-            ...documentSnapshot.data(),
-            id: documentSnapshot.id,
-            key: documentSnapshot.id
-          }))
-        );
-      });
+    const unsubscribe = allPosts(posts => {
+      setPosts(posts);
+      setLoading(false);
+    });
+
     return () => unsubscribe();
   }, []);
 
