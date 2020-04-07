@@ -17,6 +17,7 @@
     "@react-navigation/stack": "^5.2.3",
     "expo": "~36.0.0",
     "i18n-js": "^3.5.1",
+    "js-md5": "^0.7.3",
     "moment": "^2.24.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",

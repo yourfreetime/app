@@ -11,7 +11,8 @@ const ButtonComponent = ({
   onPress,
   iconColor,
   size,
-  startIcon: startIconProp
+  startIcon: startIconProp,
+  style: newStyle
 }) => {
   const startIcon = startIconProp ? (
     <View style={style.startIcon}>
@@ -24,7 +25,7 @@ const ButtonComponent = ({
       onPress={onPress}
       background={TouchableNativeFeedback.SelectableBackground()}
     >
-      <View style={[style.root, style[variant], style[size]]}>
+      <View style={[style.root, style[variant], style[size], newStyle]}>
         {startIcon}
         <Text
           style={[style.text, style[`${variant}Text`], style[`${size}Text`]]}
@@ -39,7 +40,7 @@ const ButtonComponent = ({
 ButtonComponent.propTypes = {
   title: PropTypes.string.isRequired,
   onPress: PropTypes.func,
-  variant: PropTypes.oneOf(["primary", "active", "white"]),
+  variant: PropTypes.oneOf(["primary", "active", "white", "transparent"]),
   size: PropTypes.oneOf(["large", "medium", "small"])
 };
 

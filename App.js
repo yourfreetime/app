@@ -18,13 +18,14 @@ import PostScreen from "./src/screens/Post";
 import SettingsScreen from "./src/screens/Settings";
 import FormCommentScreen from "./src/screens/FormComment";
 import PostSavesScreen from "./src/screens/PostSaves";
+import SearchScreen from "./src/screens/Search";
+import FollowersScreen from "./src/screens/Followers";
+import RegisterScreen from "./src/screens/Register";
 
 import Header from "./src/containers/Header";
 import UserAvatar from "./src/containers/UserAvatar";
 
 import { setUser } from "./src/services/user";
-import SearchScreen from "./src/screens/Search";
-import FollowersScreen from "./src/screens/Followers";
 
 const Stack = createStackNavigator();
 
@@ -67,6 +68,11 @@ const App = () => {
         <Stack.Screen
           name="Login"
           component={LoginScreen}
+          options={{ header: () => null }}
+        />
+        <Stack.Screen
+          name="Register"
+          component={RegisterScreen}
           options={{ header: () => null }}
         />
         <Stack.Screen

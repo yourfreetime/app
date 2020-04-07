@@ -7,19 +7,22 @@ import {
   ToastAndroid
 } from "react-native";
 import { StackActions } from "@react-navigation/native";
-import { firebase } from "@react-native-firebase/auth";
 import { t } from "../../i18n";
 
-import style from "./Login.style";
+import style from "./Register.style";
 
 import Button from "../../components/Button";
 import Loader from "../../components/Loader";
 import colors from "../../core/colors";
 
-const LoginScreen = ({ navigation }) => {
+import { createUser } from "../../services/user";
+
+const RegisterScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   return (
     <SafeAreaView style={style.container}>
@@ -31,14 +34,24 @@ const LoginScreen = ({ navigation }) => {
           style={style.logo}
         />
         <TextInput
+          placeholder={t("NAME")}
+          underlineColorAndroid={colors.white}
+          onChangeText={text => setName(text)}
+          value={name}
+          returnKeyType="next"
+          placeholderTextColor={colors.white}
+          textContentType="name"
+          style={style.input}
+        />
+        <TextInput
           placeholder={t("EMAIL")}
           underlineColorAndroid={colors.white}
           onChangeText={text => setEmail(text)}
           value={email}
           keyboardType="email-address"
+          returnKeyType="next"
           placeholderTextColor={colors.white}
           textContentType="emailAddress"
-          returnKeyType="next"
           style={style.input}
         />
         <TextInput
@@ -51,14 +64,29 @@ const LoginScreen = ({ navigation }) => {
           secureTextEntry
           style={style.input}
         />
+        <TextInput
+          placeholder={t("CONFIRM_PASSWORD")}
+          underlineColorAndroid={colors.white}
+          onChangeText={text => setConfirmPassword(text)}
+          value={confirmPassword}
+          placeholderTextColor={colors.white}
+          textContentType="password"
+          secureTextEntry
+          style={style.input}
+        />
         <Button
           variant="white"
           title={t("LOGIN")}
-          style={{ marginBottom: 16, marginTop: 8 }}
           onPress={async () => {
-            if (!email || !password) {
+            if (!email || !password || !password || !confirmPassword) {
               ToastAndroid.showWithGravity(
                 t("REQUIRED_FIELDS"),
+                ToastAndroid.LONG,
+                ToastAndroid.BOTTOM
+              );
+            } else if (password !== confirmPassword) {
+              ToastAndroid.showWithGravity(
+                t("EQUAL_PASSWORDS"),
                 ToastAndroid.LONG,
                 ToastAndroid.BOTTOM
               );
@@ -66,9 +94,7 @@ const LoginScreen = ({ navigation }) => {
               try {
                 setLoading(true);
 
-                await firebase
-                  .auth()
-                  .signInWithEmailAndPassword(email, password);
+                await createUser({ email, name, password });
 
                 navigation.dispatch(StackActions.replace("Home"));
               } catch (error) {
@@ -83,14 +109,9 @@ const LoginScreen = ({ navigation }) => {
             }
           }}
         />
-        <Button
-          variant="transparent"
-          title={t("REGISTER")}
-          onPress={() => navigation.dispatch(StackActions.push("Register"))}
-        />
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;

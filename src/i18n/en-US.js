@@ -33,6 +33,10 @@ export default {
   REQUIRED_FIELDS: "Campos obrigatórios não foram preenchidos!!!",
   EMAIL: "E-mail",
   PASSWORD: "Senha",
+  CONFIRM_PASSWORD: "Confirmar Senha",
   USERS: "Usuários",
-  LOGIN: "Entrar"
+  LOGIN: "Entrar",
+  REGISTER: "Registrar",
+  NAME: "Nome",
+  EQUAL_PASSWORDS: "O campo senha e confirmar senha devem ser iguais"
 };

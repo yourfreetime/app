@@ -21,6 +21,7 @@ const style = StyleSheet.create({
   primaryText: { color: colors.white },
   activeText: { color: colors.white },
   whiteText: {},
+  transparentText: { color: colors.white },
   text: {
     fontSize: 15,
     textTransform: "uppercase",
