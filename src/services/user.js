@@ -1,9 +1,11 @@
 import firestore from "@react-native-firebase/firestore";
 import firebase from "@react-native-firebase/app";
 
-export const allUsers = callback => {
+export const searchUsers = (search, callback) => {
   const unsubscribe = firestore()
     .collection("users")
+    .where("name", ">=", search)
+    .where("name", "<=", search + "\uf8ff")
     .onSnapshot(querySnapshot => {
       callback(
         querySnapshot.docs.map(documentSnapshot => ({

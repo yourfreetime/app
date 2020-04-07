@@ -5,22 +5,21 @@ import CardUser from "../../../../containers/CardUser";
 import Root from "../../../../components/Root";
 import Loader from "../../../../components/Loader";
 
-import { allUsers } from "../../../../services/user";
+import { searchUsers } from "../../../../services/user";
 
-const UsersContainer = () => {
+const UsersContainer = ({ search }) => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     setLoading(true);
-
-    const unsubscribe = allUsers(users => {
+    const unsubscribe = searchUsers(search, users => {
       setUsers(users);
       setLoading(false);
     });
 
     return () => unsubscribe();
-  }, []);
+  }, [search]);
 
   if (loading) {
     return <Loader show />;
