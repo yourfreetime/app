@@ -13,8 +13,11 @@ const UsersContainer = ({ search }) => {
 
   useEffect(() => {
     setLoading(true);
+
     const unsubscribe = searchUsers(search, users => {
-      setUsers(users);
+      if (search) {
+        setUsers(users);
+      }
       setLoading(false);
     });
 

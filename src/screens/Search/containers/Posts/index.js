@@ -15,7 +15,9 @@ const PostsContainer = ({ search }) => {
     setLoading(true);
 
     const unsubscribe = searchPosts(search, posts => {
-      setPosts(posts);
+      if (search) {
+        setPosts(posts);
+      }
       setLoading(false);
     });
 

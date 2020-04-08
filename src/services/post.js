@@ -19,7 +19,6 @@ export const allPosts = callback => {
 };
 
 export const searchPosts = (search, callback) => {
-  console.log("Search:", search);
   const unsubscribe = firestore()
     .collection("posts")
     .where("text", ">=", search)
