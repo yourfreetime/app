@@ -7,19 +7,23 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
-
+  install:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-
-    steps:
-    - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: yarn install --frozen-lockfile
-    - run: yarn build
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Install npm dependencies
+        run: yarn install --frozen-lockfile
+  build-android:
+    needs: install
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v2
+      - name: Install npm dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build Android Release
+        run: cd android && ./gradlew build
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v1
+        with:
+          name: app-release.apk
+          path: android/app/build/outputs/apk/release/
