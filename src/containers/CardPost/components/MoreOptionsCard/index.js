@@ -8,16 +8,11 @@ import MoreOptions from '../../../../components/MoreOptions';
 
 import { deletePost } from '../../../../services/post';
 import { savePost } from '../../../../services/user';
-import readCurrentUser from '../../../../helpers/readCurrentUser';
+import { useStorage } from '../../../../provider/StorageProvider';
 
 const MoreOptionsCardComponent = ({ post }) => {
+  const { currentUser } = useStorage();
   const navigation = useNavigation();
-  const [currentUser, setCurrentUser] = useState();
-
-  useEffect(() => {
-    const getData = async () => setCurrentUser(await readCurrentUser());
-    getData();
-  }, []);
 
   const objectDispatch = navigation.dangerouslyGetParent() || navigation;
 
@@ -71,10 +66,6 @@ const MoreOptionsCardComponent = ({ post }) => {
       );
     }
   };
-
-  if (!currentUser) {
-    return <View />;
-  }
 
   let options = [t('SAVE'), t('DENOUNCE')];
   let actions = [onSave, () => {}];

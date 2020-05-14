@@ -1,26 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 
 import style from './UserAvatar.style';
 import Avatar from '../../components/Avatar';
-import readCurrentUser from '../../helpers/readCurrentUser';
+import { useStorage } from '../../provider/StorageProvider';
 
-const UserAvatar = () => {
-  const [picture, setPicture] = useState();
-
-  useEffect(() => {
-    const getData = async () => {
-      const currentUser = await readCurrentUser();
-      setPicture(currentUser.picture);
-    };
-    getData();
-  }, []);
-
+const UserAvatarContainer = () => {
+  const { currentUser } = useStorage();
   return (
     <View style={style.root}>
-      <Avatar picture={picture} />
+      <Avatar picture={currentUser.picture} />
     </View>
   );
 };
 
-export default UserAvatar;
+export default UserAvatarContainer;
