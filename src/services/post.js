@@ -26,6 +26,54 @@ export const LIST_POSTS_FEED = gql`
   }
 `;
 
+export const CREATE_POST = gql`
+  mutation createPost($text: String!) {
+    createPost(input: { text: $text }) {
+      id
+      text
+      dateCreated
+      author {
+        id
+        name
+        picture
+      }
+      likes {
+        date
+        user {
+          id
+        }
+      }
+      comments {
+        dateCreated
+      }
+    }
+  }
+`;
+
+export const UPDATE_POST = gql`
+  mutation updatePost($text: String!, $postId: String!) {
+    updatePost(input: { text: $text, postId: $postId }) {
+      id
+      text
+      dateCreated
+      author {
+        id
+        name
+        picture
+      }
+      likes {
+        date
+        user {
+          id
+        }
+      }
+      comments {
+        dateCreated
+      }
+    }
+  }
+`;
+
 export const GET_POST = gql`
   query getPost($postId: String!) {
     getPost(postId: $postId) {

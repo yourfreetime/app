@@ -1,19 +1,47 @@
-import React, { useState, useEffect } from "react";
-import { Image, Text, View, TextInput } from "react-native";
-import { firebase } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
-import { StackActions } from "@react-navigation/core";
-import { t } from "../../i18n";
+import React, { useState, useEffect } from 'react';
+import { Image, Text, View, TextInput } from 'react-native';
+import { useMutation } from '@apollo/react-hooks';
+import { StackActions } from '@react-navigation/core';
+import { t } from '../../i18n';
 
-import style from "./FormPost.style";
+import style from './FormPost.style';
 
-import Button from "../../components/Button";
-import Root from "../../components/Root";
+import Button from '../../components/Button';
+import Root from '../../components/Root';
 
-import { createPost, updatePost } from "../../services/post";
+import { useStorage } from '../../provider/StorageProvider';
+import { CREATE_POST, UPDATE_POST, LIST_POSTS_FEED } from '../../services/post';
 
 const FormPostScreen = ({ navigation, route }) => {
-  const [text, setText] = useState("");
+  const { currentUser } = useStorage();
+  const [text, setText] = useState('');
+  const onCompleted = () => navigation.dispatch(StackActions.pop());
+
+  const [createPost] = useMutation(CREATE_POST, {
+    onCompleted,
+    update(cache, { data }) {
+      const dataList = cache.readQuery({ query: LIST_POSTS_FEED });
+
+      cache.writeQuery({
+        query: LIST_POSTS_FEED,
+        data: { listPostsFeed: [data.createPost, ...dataList.listPostsFeed] }
+      });
+    }
+  });
+  const [updatePost] = useMutation(UPDATE_POST, {
+    onCompleted,
+    update(cache, { data }) {
+      const { listPostsFeed } = cache.readQuery({ query: LIST_POSTS_FEED });
+
+      const posts = listPostsFeed.map(item =>
+        item.id === route.params.post.id ? data.updatePost : item
+      );
+      cache.writeQuery({
+        query: LIST_POSTS_FEED,
+        data: { listPostsFeed: posts }
+      });
+    }
+  });
 
   useEffect(() => {
     if (route.params) {
@@ -21,18 +49,16 @@ const FormPostScreen = ({ navigation, route }) => {
     }
   }, []);
 
-  const currentUser = firebase.auth().currentUser;
-
   return (
     <Root style={{ paddingTop: 0 }}>
       <View style={style.user}>
-        <Image style={style.userImage} source={{ uri: currentUser.photoURL }} />
-        <Text style={style.userName}>{currentUser.displayName}</Text>
+        <Image style={style.userImage} source={{ uri: currentUser.picture }} />
+        <Text style={style.userName}>{currentUser.name}</Text>
       </View>
       <TextInput
         style={style.input}
         textAlignVertical="top"
-        placeholder={t("PLACEHOLDER_POST")}
+        placeholder={t('PLACEHOLDER_POST')}
         multiline
         numberOfLines={4}
         onChangeText={newText => setText(newText)}
@@ -41,20 +67,13 @@ const FormPostScreen = ({ navigation, route }) => {
       />
       <Button
         variant="primary"
-        title={route.params ? t("UPDATE") : t("SEND")}
-        onPress={async () => {
+        title={route.params ? t('UPDATE') : t('SEND')}
+        onPress={() => {
           if (!route.params) {
-            await createPost({
-              author: firestore()
-                .collection("users")
-                .doc(firebase.auth().currentUser.uid),
-              text
-            });
+            createPost({ variables: { text } });
           } else {
-            await updatePost(route.params.post.id, text);
+            updatePost({ variables: { text, postId: route.params.post.id } });
           }
-
-          navigation.dispatch(StackActions.pop());
         }}
       />
     </Root>

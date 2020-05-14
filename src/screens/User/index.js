@@ -1,6 +1,5 @@
 import React from 'react';
 import { StackActions } from '@react-navigation/native';
-import { firebase } from '@react-native-firebase/auth';
 import { Image, FlatList, View } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
 import { t } from '../../i18n';

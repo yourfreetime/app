@@ -32,42 +32,6 @@ export const DELETE_FOLLOW = gql`
   }
 `;
 
-export const createFollow = async (userId, userFollowId) => {
-  await firestore()
-    .collection('follows')
-    .add({
-      user: firestore()
-        .collection('users')
-        .doc(userId),
-      userFollow: firestore()
-        .collection('users')
-        .doc(userFollowId),
-      date: firestore.Timestamp.fromDate(new Date())
-    });
-};
-
-export const removeFollow = async (userId, userFollowId) => {
-  const result = await firestore()
-    .collection('follows')
-    .where(
-      'user',
-      '==',
-      firestore()
-        .collection('users')
-        .doc(userId)
-    )
-    .where(
-      'userFollow',
-      '==',
-      firestore()
-        .collection('users')
-        .doc(userFollowId)
-    )
-    .get();
-
-  await result.docs[0].ref.delete();
-};
-
 export const listFollow = (userId, callback) => {
   const unsubscribe = firestore()
     .collection('follows')
