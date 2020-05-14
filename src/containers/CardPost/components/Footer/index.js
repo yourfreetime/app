@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
 import { firebase } from '@react-native-firebase/auth';
@@ -11,20 +11,13 @@ import ButtonFooter from '../ButtonFooter';
 import style from './Footer.style';
 
 import { likePost, unlikePost } from '../../../../services/post';
-import readCurrentUser from '../../../../helpers/readCurrentUser';
+import { useStorage } from '../../../../provider/StorageProvider';
 
 const FooterComponent = ({ post }) => {
+  const { currentUser } = useStorage();
   const navigation = useNavigation();
-  const [isLike, setIsLike] = useState(false);
 
-  useEffect(() => {
-    const getData = async () => {
-      const currentUser = await readCurrentUser();
-      setIsLike(post.likes.some(item => item.user.id === currentUser.id));
-    };
-    getData();
-  }, []);
-
+  const isLike = post.likes.some(item => item.user.id === currentUser.id);
   const objectDispatch = navigation.dangerouslyGetParent() || navigation;
   const countLikes = post.likes ? post.likes.length : 0;
   const countComments = post.comments ? post.comments.length : 0;

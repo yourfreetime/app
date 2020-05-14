@@ -1,29 +1,31 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 import {
   Image,
   SafeAreaView,
   TextInput,
   ScrollView,
   ToastAndroid
-} from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
-import { StackActions } from "@react-navigation/native";
-import { t } from "../../i18n";
+} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage';
+import { StackActions } from '@react-navigation/native';
+import { t } from '../../i18n';
 
-import style from "./Register.style";
+import style from './Register.style';
 
-import Button from "../../components/Button";
-import Loader from "../../components/Loader";
-import colors from "../../core/colors";
+import Button from '../../components/Button';
+import Loader from '../../components/Loader';
+import colors from '../../core/colors';
 
-import { onRegister } from "../../services/login";
+import { useStorage } from '../../provider/StorageProvider';
+import { onRegister } from '../../services/login';
 
 const RegisterScreen = ({ navigation }) => {
+  const { setCurrentUser } = useStorage();
   const [loading, setLoading] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
     <SafeAreaView style={style.container}>
@@ -31,11 +33,11 @@ const RegisterScreen = ({ navigation }) => {
         <Loader show={loading} background="transparent" />
         <Image
           resizeMode="contain"
-          source={require("../../assets/logo.png")}
+          source={require('../../assets/logo.png')}
           style={style.logo}
         />
         <TextInput
-          placeholder={t("NAME")}
+          placeholder={t('NAME')}
           underlineColorAndroid={colors.white}
           onChangeText={text => setName(text)}
           value={name}
@@ -45,7 +47,7 @@ const RegisterScreen = ({ navigation }) => {
           style={style.input}
         />
         <TextInput
-          placeholder={t("EMAIL")}
+          placeholder={t('EMAIL')}
           underlineColorAndroid={colors.white}
           onChangeText={text => setEmail(text)}
           value={email}
@@ -56,7 +58,7 @@ const RegisterScreen = ({ navigation }) => {
           style={style.input}
         />
         <TextInput
-          placeholder={t("PASSWORD")}
+          placeholder={t('PASSWORD')}
           underlineColorAndroid={colors.white}
           onChangeText={text => setPassword(text)}
           value={password}
@@ -66,7 +68,7 @@ const RegisterScreen = ({ navigation }) => {
           style={style.input}
         />
         <TextInput
-          placeholder={t("CONFIRM_PASSWORD")}
+          placeholder={t('CONFIRM_PASSWORD')}
           underlineColorAndroid={colors.white}
           onChangeText={text => setConfirmPassword(text)}
           value={confirmPassword}
@@ -77,17 +79,17 @@ const RegisterScreen = ({ navigation }) => {
         />
         <Button
           variant="white"
-          title={t("LOGIN")}
+          title={t('LOGIN')}
           onPress={async () => {
             if (!email || !password || !password || !confirmPassword) {
               ToastAndroid.showWithGravity(
-                t("REQUIRED_FIELDS"),
+                t('REQUIRED_FIELDS'),
                 ToastAndroid.LONG,
                 ToastAndroid.BOTTOM
               );
             } else if (password !== confirmPassword) {
               ToastAndroid.showWithGravity(
-                t("EQUAL_PASSWORDS"),
+                t('EQUAL_PASSWORDS'),
                 ToastAndroid.LONG,
                 ToastAndroid.BOTTOM
               );
@@ -95,15 +97,12 @@ const RegisterScreen = ({ navigation }) => {
               try {
                 setLoading(true);
                 const result = await onRegister({ email, name, password });
+                setCurrentUser(result.data.user);
                 await AsyncStorage.setItem(
-                  "@yourfreetime:token",
+                  '@yourfreetime:token',
                   result.data.token
                 );
-                await AsyncStorage.setItem(
-                  "@yourfreetime:user",
-                  JSON.stringify(result.data.user)
-                );
-                navigation.dispatch(StackActions.replace("Home"));
+                navigation.dispatch(StackActions.replace('Home'));
               } catch (error) {
                 ToastAndroid.showWithGravity(
                   error.message,
@@ -118,7 +117,7 @@ const RegisterScreen = ({ navigation }) => {
         />
         <Button
           variant="transparent"
-          title={t("BACK")}
+          title={t('BACK')}
           onPress={() => navigation.dispatch(StackActions.pop())}
         />
       </ScrollView>
