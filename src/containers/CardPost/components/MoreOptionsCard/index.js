@@ -8,6 +8,7 @@ import MoreOptions from '../../../../components/MoreOptions';
 
 import { deletePost } from '../../../../services/post';
 import { savePost } from '../../../../services/user';
+import readCurrentUser from '../../../../helpers/readCurrentUser';
 
 const MoreOptionsCardComponent = ({ post }) => {
   const navigation = useNavigation();
