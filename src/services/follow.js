@@ -1,15 +1,46 @@
-import firestore from "@react-native-firebase/firestore";
-import { firebase } from "@react-native-firebase/auth";
+import gql from 'graphql-tag';
+import firestore from '@react-native-firebase/firestore';
+import { firebase } from '@react-native-firebase/auth';
+
+export const CREATE_FOLLOW = gql`
+  mutation($userFollowId: String!) {
+    createFollow(input: { userFollowId: $userFollowId }) {
+      user {
+        id
+        name
+      }
+      userFollow {
+        id
+        name
+      }
+    }
+  }
+`;
+
+export const DELETE_FOLLOW = gql`
+  mutation($userFollowId: String!) {
+    deleteFollow(input: { userFollowId: $userFollowId }) {
+      user {
+        id
+        name
+      }
+      userFollow {
+        id
+        name
+      }
+    }
+  }
+`;
 
 export const createFollow = async (userId, userFollowId) => {
   await firestore()
-    .collection("follows")
+    .collection('follows')
     .add({
       user: firestore()
-        .collection("users")
+        .collection('users')
         .doc(userId),
       userFollow: firestore()
-        .collection("users")
+        .collection('users')
         .doc(userFollowId),
       date: firestore.Timestamp.fromDate(new Date())
     });
@@ -17,19 +48,19 @@ export const createFollow = async (userId, userFollowId) => {
 
 export const removeFollow = async (userId, userFollowId) => {
   const result = await firestore()
-    .collection("follows")
+    .collection('follows')
     .where(
-      "user",
-      "==",
+      'user',
+      '==',
       firestore()
-        .collection("users")
+        .collection('users')
         .doc(userId)
     )
     .where(
-      "userFollow",
-      "==",
+      'userFollow',
+      '==',
       firestore()
-        .collection("users")
+        .collection('users')
         .doc(userFollowId)
     )
     .get();
@@ -39,12 +70,12 @@ export const removeFollow = async (userId, userFollowId) => {
 
 export const listFollow = (userId, callback) => {
   const unsubscribe = firestore()
-    .collection("follows")
+    .collection('follows')
     .where(
-      "userFollow",
-      "==",
+      'userFollow',
+      '==',
       firestore()
-        .collection("users")
+        .collection('users')
         .doc(userId)
     )
     .onSnapshot(querySnapshot => {

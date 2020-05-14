@@ -107,29 +107,6 @@ export const getPost = (postId, callback) => {
   return unsubscribe;
 };
 
-export const allByUser = (userId, callback) => {
-  const userRef = firebase
-    .firestore()
-    .collection('users')
-    .doc(userId);
-
-  const unsubscribe = firestore()
-    .collection('posts')
-    .where('author', '==', userRef)
-    .orderBy('date', 'desc')
-    .onSnapshot(querySnapshot => {
-      const docs = querySnapshot.docs.map(documentSnapshot => ({
-        ...documentSnapshot.data(),
-        id: documentSnapshot.id,
-        key: documentSnapshot.id
-      }));
-
-      callback(docs);
-    });
-
-  return unsubscribe;
-};
-
 export const allByLocation = async location => {
   const max = new firestore.GeoPoint(
     location.latitude + 10,

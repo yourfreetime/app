@@ -14,6 +14,11 @@ export const GET_USER = gql`
     }
     listFollowers(filter: { userId: $userId }) {
       user {
+        id
+        name
+      }
+      userFollow {
+        id
         name
       }
     }
