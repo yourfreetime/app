@@ -6,8 +6,8 @@ import {
   ScrollView,
   ToastAndroid
 } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import { StackActions } from "@react-navigation/native";
-import { firebase } from "@react-native-firebase/auth";
 import { t } from "../../i18n";
 
 import style from "./Login.style";
@@ -15,6 +15,8 @@ import style from "./Login.style";
 import Button from "../../components/Button";
 import Loader from "../../components/Loader";
 import colors from "../../core/colors";
+
+import { onLogin } from "../../services/login";
 
 const LoginScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -65,11 +67,15 @@ const LoginScreen = ({ navigation }) => {
             } else {
               try {
                 setLoading(true);
-
-                await firebase
-                  .auth()
-                  .signInWithEmailAndPassword(email, password);
-
+                const result = await onLogin(email, password);
+                await AsyncStorage.setItem(
+                  "@yourfreetime:token",
+                  result.data.token
+                );
+                await AsyncStorage.setItem(
+                  "@yourfreetime:user",
+                  JSON.stringify(result.data.user)
+                );
                 navigation.dispatch(StackActions.replace("Home"));
               } catch (error) {
                 ToastAndroid.showWithGravity(

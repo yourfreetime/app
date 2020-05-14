@@ -1,30 +1,5 @@
 import firestore from "@react-native-firebase/firestore";
 import firebase from "@react-native-firebase/app";
-import md5 from "js-md5";
-
-export const createUser = async userObject => {
-  const idImage = md5(userObject.email.toLowerCase());
-
-  const data = await firebase
-    .auth()
-    .createUserWithEmailAndPassword(userObject.email, userObject.password);
-
-  const user = await firestore()
-    .collection("users")
-    .doc(data.user.uid)
-    .set({
-      ...userObject,
-      picture: `https://www.gravatar.com/avatar/${idImage}?s=500`,
-      dateCreated: firestore.Timestamp.fromDate(new Date()),
-      dateUpdated: firestore.Timestamp.fromDate(new Date())
-    });
-
-  await firebase
-    .auth()
-    .signInWithEmailAndPassword(userObject.email, userObject.password);
-
-  return user;
-};
 
 export const searchUsers = (search, callback) => {
   const unsubscribe = firestore()

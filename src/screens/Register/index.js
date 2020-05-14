@@ -6,6 +6,7 @@ import {
   ScrollView,
   ToastAndroid
 } from "react-native";
+import AsyncStorage from "@react-native-community/async-storage";
 import { StackActions } from "@react-navigation/native";
 import { t } from "../../i18n";
 
@@ -15,7 +16,7 @@ import Button from "../../components/Button";
 import Loader from "../../components/Loader";
 import colors from "../../core/colors";
 
-import { createUser } from "../../services/user";
+import { onRegister } from "../../services/login";
 
 const RegisterScreen = ({ navigation }) => {
   const [loading, setLoading] = useState(false);
@@ -93,9 +94,15 @@ const RegisterScreen = ({ navigation }) => {
             } else {
               try {
                 setLoading(true);
-
-                await createUser({ email, name, password });
-
+                const result = await onRegister({ email, name, password });
+                await AsyncStorage.setItem(
+                  "@yourfreetime:token",
+                  result.data.token
+                );
+                await AsyncStorage.setItem(
+                  "@yourfreetime:user",
+                  JSON.stringify(result.data.user)
+                );
                 navigation.dispatch(StackActions.replace("Home"));
               } catch (error) {
                 ToastAndroid.showWithGravity(
@@ -108,6 +115,11 @@ const RegisterScreen = ({ navigation }) => {
               }
             }
           }}
+        />
+        <Button
+          variant="transparent"
+          title={t("BACK")}
+          onPress={() => navigation.dispatch(StackActions.pop())}
         />
       </ScrollView>
     </SafeAreaView>

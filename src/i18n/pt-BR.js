@@ -38,5 +38,6 @@ export default {
   LOGIN: "Entrar",
   REGISTER: "Registrar",
   NAME: "Nome",
-  EQUAL_PASSWORDS: "O campo senha e confirmar senha devem ser iguais"
+  EQUAL_PASSWORDS: "O campo senha e confirmar senha devem ser iguais",
+  BACK: "Voltar"
 };
