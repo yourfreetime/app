@@ -1,10 +1,66 @@
-import firestore from "@react-native-firebase/firestore";
-import firebase from "@react-native-firebase/app";
+import firestore from '@react-native-firebase/firestore';
+import firebase from '@react-native-firebase/app';
+import gql from 'graphql-tag';
+
+export const LIST_POSTS_FEED = gql`
+  query listPostsFeed {
+    listPostsFeed {
+      id
+      text
+      dateCreated
+      author {
+        id
+        name
+        picture
+      }
+      likes {
+        date
+        user {
+          id
+        }
+      }
+      comments {
+        dateCreated
+      }
+    }
+  }
+`;
+
+export const GET_POST = gql`
+  query getPost($postId: String!) {
+    getPost(postId: $postId) {
+      id
+      text
+      dateCreated
+      author {
+        id
+        name
+        picture
+      }
+      likes {
+        date
+        user {
+          id
+        }
+      }
+      comments {
+        id
+        text
+        user {
+          id
+          name
+          picture
+        }
+        dateCreated
+      }
+    }
+  }
+`;
 
 export const allPosts = callback => {
   const unsubscribe = firestore()
-    .collection("posts")
-    .orderBy("date", "desc")
+    .collection('posts')
+    .orderBy('date', 'desc')
     .onSnapshot(querySnapshot => {
       callback(
         querySnapshot.docs.map(documentSnapshot => ({
@@ -20,9 +76,9 @@ export const allPosts = callback => {
 
 export const searchPosts = (search, callback) => {
   const unsubscribe = firestore()
-    .collection("posts")
-    .where("text", ">=", search)
-    .where("text", "<=", search + "\uf8ff")
+    .collection('posts')
+    .where('text', '>=', search)
+    .where('text', '<=', search + '\uf8ff')
     .onSnapshot(querySnapshot => {
       callback(
         querySnapshot.docs.map(documentSnapshot => ({
@@ -38,7 +94,7 @@ export const searchPosts = (search, callback) => {
 
 export const getPost = (postId, callback) => {
   const unsubscribe = firestore()
-    .collection("posts")
+    .collection('posts')
     .doc(postId)
     .onSnapshot(docSnapshot => {
       callback({
@@ -54,13 +110,13 @@ export const getPost = (postId, callback) => {
 export const allByUser = (userId, callback) => {
   const userRef = firebase
     .firestore()
-    .collection("users")
+    .collection('users')
     .doc(userId);
 
   const unsubscribe = firestore()
-    .collection("posts")
-    .where("author", "==", userRef)
-    .orderBy("date", "desc")
+    .collection('posts')
+    .where('author', '==', userRef)
+    .orderBy('date', 'desc')
     .onSnapshot(querySnapshot => {
       const docs = querySnapshot.docs.map(documentSnapshot => ({
         ...documentSnapshot.data(),
@@ -85,24 +141,24 @@ export const allByLocation = async location => {
   );
 
   const users = await firestore()
-    .collection("users")
-    .where("position", "<=", max)
-    .where("position", ">=", min)
+    .collection('users')
+    .where('position', '<=', max)
+    .where('position', '>=', min)
     .get();
 
-  let newFirestore = firestore().collection("posts");
+  let newFirestore = firestore().collection('posts');
 
   users.docs.map(item => {
     newFirestore = newFirestore.where(
-      "author",
-      "==",
+      'author',
+      '==',
       firestore()
-        .collection("users")
+        .collection('users')
         .doc(item.id)
     );
   });
 
-  const posts = await newFirestore.orderBy("date", "desc").get();
+  const posts = await newFirestore.orderBy('date', 'desc').get();
 
   return posts.docs.map(documentSnapshot => ({
     ...documentSnapshot.data(),
@@ -113,7 +169,7 @@ export const allByLocation = async location => {
 
 export const allSaveByUser = async userId => {
   const user = await firestore()
-    .collection("users")
+    .collection('users')
     .doc(userId)
     .get();
 
@@ -139,7 +195,7 @@ export const allSaveByUser = async userId => {
 
 export const createPost = async postObject => {
   await firestore()
-    .collection("posts")
+    .collection('posts')
     .add({
       ...postObject,
       date: firestore.Timestamp.fromDate(new Date())
@@ -148,14 +204,14 @@ export const createPost = async postObject => {
 
 export const deletePost = async postId => {
   await firestore()
-    .collection("posts")
+    .collection('posts')
     .doc(postId)
     .delete();
 };
 
 export const updatePost = async (postId, text) => {
   await firestore()
-    .collection("posts")
+    .collection('posts')
     .doc(postId)
     .update({ text });
 };
@@ -167,7 +223,7 @@ export const likePost = async (postId, likeObject) => {
   };
 
   await firestore()
-    .collection("posts")
+    .collection('posts')
     .doc(postId)
     .update({
       likes: firebase.firestore.FieldValue.arrayUnion(newLikeObject)
@@ -176,7 +232,7 @@ export const likePost = async (postId, likeObject) => {
 
 export const unlikePost = async (postId, likeObject) => {
   await firestore()
-    .collection("posts")
+    .collection('posts')
     .doc(postId)
     .update({
       likes: firebase.firestore.FieldValue.arrayRemove(likeObject)
@@ -190,7 +246,7 @@ export const createComment = async (postId, commentObject) => {
   };
 
   await firestore()
-    .collection("posts")
+    .collection('posts')
     .doc(postId)
     .update({
       comments: firebase.firestore.FieldValue.arrayUnion(newCommentObject)

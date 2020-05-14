@@ -1,26 +1,29 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { View } from "react-native";
-import { firebase } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
-import { useNavigation, StackActions } from "@react-navigation/core";
-import { t } from "../../../../i18n";
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { View } from 'react-native';
+import { firebase } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { useNavigation, StackActions } from '@react-navigation/core';
+import { t } from '../../../../i18n';
 
-import ButtonFooter from "../ButtonFooter";
+import ButtonFooter from '../ButtonFooter';
 
-import style from "./Footer.style";
+import style from './Footer.style';
 
-import { likePost, unlikePost } from "../../../../services/post";
+import { likePost, unlikePost } from '../../../../services/post';
+import readCurrentUser from '../../../../helpers/readCurrentUser';
 
-const FooterComponent = ({ post, author }) => {
+const FooterComponent = ({ post }) => {
   const navigation = useNavigation();
+  const [isLike, setIsLike] = useState(false);
 
-  let like;
-  if (post.likes) {
-    like = post.likes.find(
-      item => item.user.id === firebase.auth().currentUser.uid
-    );
-  }
+  useEffect(() => {
+    const getData = async () => {
+      const currentUser = await readCurrentUser();
+      setIsLike(post.likes.some(item => item.user.id === currentUser.id));
+    };
+    getData();
+  }, []);
 
   const objectDispatch = navigation.dangerouslyGetParent() || navigation;
   const countLikes = post.likes ? post.likes.length : 0;
@@ -30,36 +33,33 @@ const FooterComponent = ({ post, author }) => {
     <View style={style.buttons}>
       <ButtonFooter
         onPress={async () => {
-          if (!like) {
+          if (!isLike) {
             await likePost(post.id, {
               user: firestore()
-                .collection("users")
+                .collection('users')
                 .doc(firebase.auth().currentUser.uid)
             });
           } else {
-            await unlikePost(post.id, like);
+            await unlikePost(post.id, isLike);
           }
         }}
         icon="enhance"
-        text={`${countLikes} ${t("ENHANCE")}`}
-        active={!!like}
+        text={`${countLikes} ${t('ENHANCE')}`}
+        active={isLike}
       />
       <ButtonFooter
         onPress={() =>
-          objectDispatch.dispatch(
-            StackActions.push("FormComment", { post, author })
-          )
+          objectDispatch.dispatch(StackActions.push('FormComment', { post }))
         }
         icon="reply"
-        text={`${countComments} ${t("ANSWER")}`}
+        text={`${countComments} ${t('ANSWER')}`}
       />
     </View>
   );
 };
 
 FooterComponent.propTypes = {
-  post: PropTypes.object,
-  author: PropTypes.object
+  post: PropTypes.object.isRequired
 };
 
 export default FooterComponent;

@@ -1,23 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { View } from "react-native";
-import { firebase } from "@react-native-firebase/auth";
+import React, { useEffect, useState } from 'react';
+import { View } from 'react-native';
 
-import { getUser } from "../../services/user";
-
-import style from "./UserAvatar.style";
-import Avatar from "../../components/Avatar";
+import style from './UserAvatar.style';
+import Avatar from '../../components/Avatar';
+import readCurrentUser from '../../helpers/readCurrentUser';
 
 const UserAvatar = () => {
-  const [picture, setPicture] = useState(null);
+  const [picture, setPicture] = useState();
 
   useEffect(() => {
-    let userId = firebase.auth().currentUser.uid;
-
     const getData = async () => {
-      const result = await getUser(userId);
-      setPicture(result.data().picture);
+      const currentUser = await readCurrentUser();
+      setPicture(currentUser.picture);
     };
-
     getData();
   }, []);
 

@@ -1,15 +1,16 @@
-import React, { useEffect } from "react";
-import Geolocation from "@react-native-community/geolocation";
-import { StatusBar, PermissionsAndroid } from "react-native";
-import "react-native-gesture-handler";
-import { firebase } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useEffect } from 'react';
+import Geolocation from '@react-native-community/geolocation';
+import { StatusBar, PermissionsAndroid } from 'react-native';
+import 'react-native-gesture-handler';
+import { firebase } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { NavigationContainer } from '@react-navigation/native';
+import { ApolloProvider } from '@apollo/react-hooks';
 
-import colors from "./src/core/colors";
-import Routes from "./src/core/Routes";
-
-import { setUser } from "./src/services/user";
+import colors from './src/core/colors';
+import Routes from './src/core/Routes';
+import apolloClient from './src/core/apolloClient';
+import { setUser } from './src/services/user';
 
 const App = () => {
   useEffect(() => {
@@ -42,10 +43,12 @@ const App = () => {
   });
 
   return (
-    <NavigationContainer>
-      <StatusBar backgroundColor={colors.dark} barStyle="light-content" />
-      <Routes />
-    </NavigationContainer>
+    <ApolloProvider client={apolloClient}>
+      <NavigationContainer>
+        <StatusBar backgroundColor={colors.dark} barStyle="light-content" />
+        <Routes />
+      </NavigationContainer>
+    </ApolloProvider>
   );
 };
 

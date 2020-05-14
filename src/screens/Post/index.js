@@ -1,37 +1,32 @@
-import React, { useState, useEffect } from "react";
-import { FlatList, Text } from "react-native";
-import { t } from "../../i18n";
+import React from 'react';
+import { FlatList, Text } from 'react-native';
+import { useQuery } from '@apollo/react-hooks';
+import { t } from '../../i18n';
 
-import CardPost from "../../containers/CardPost";
-import Root from "../../components/Root";
-import Loader from "../../components/Loader";
-import CardComment from "../../containers/CardComment";
+import CardPost from '../../containers/CardPost';
+import Root from '../../components/Root';
+import Loader from '../../components/Loader';
+import CardComment from '../../containers/CardComment';
 
-import style from "./Post.style";
+import style from './Post.style';
 
-import { getPost } from "../../services/post";
+import { GET_POST } from '../../services/post';
 
 const PostScreen = ({ route }) => {
-  const [loading, setLoading] = useState(true);
-  const [post, setPost] = useState([]);
-
-  useEffect(() => {
-    const unsubscribe = getPost(route.params.postId, post => {
-      setPost(post);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, []);
+  const { loading, data } = useQuery(GET_POST, {
+    variables: { postId: route.params.postId }
+  });
 
   if (loading) {
     return <Loader show />;
   }
 
+  const post = data.getPost;
+
   return (
     <Root style={{ paddingTop: 3 }}>
       <CardPost post={post} style={{ margin: 0 }} isOpenDetail={false} />
-      <Text style={style.title}>{t("ANSWERS")}</Text>
+      <Text style={style.title}>{t('ANSWERS')}</Text>
       <FlatList
         style={{ margin: -3 }}
         data={post.comments}
