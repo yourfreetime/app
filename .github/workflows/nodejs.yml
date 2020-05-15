@@ -23,7 +23,7 @@ jobs:
       - name: Install npm dependencies
         run: yarn install --frozen-lockfile
       - name: Build Android Release
-        run: cd android && ./gradlew build
+        run: cd android && ./gradlew assembleDebug
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
