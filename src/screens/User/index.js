@@ -2,6 +2,7 @@ import React from 'react';
 import { StackActions } from '@react-navigation/native';
 import { Image, FlatList, View } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
+import { GET_USER_DETAILS } from 'yourfreetime/queries';
 import { t } from '../../i18n';
 
 import style from './User.style';
@@ -13,7 +14,6 @@ import Count from './components/Count';
 import FollowButton from './components/FollowButton';
 
 import { useStorage } from '../../provider/StorageProvider';
-import { GET_USER } from '../../services/user';
 
 const getUserId = (route, currentUser) => {
   let userId = currentUser.id;
@@ -26,7 +26,9 @@ const getUserId = (route, currentUser) => {
 const UserScreen = ({ navigation, route }) => {
   const { currentUser } = useStorage();
   const userId = getUserId(route, currentUser);
-  const { loading, data } = useQuery(GET_USER, { variables: { userId } });
+  const { loading, data } = useQuery(GET_USER_DETAILS, {
+    variables: { userId }
+  });
 
   if (loading) {
     return <Loader show />;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { FlatList, Text } from 'react-native';
 import { useQuery } from '@apollo/react-hooks';
+import { GET_POST } from 'yourfreetime/queries';
 import { t } from '../../i18n';
 
 import CardPost from '../../containers/CardPost';
@@ -9,8 +10,6 @@ import Loader from '../../components/Loader';
 import CardComment from '../../containers/CardComment';
 
 import style from './Post.style';
-
-import { GET_POST } from '../../services/post';
 
 const PostScreen = ({ route }) => {
   const { loading, data } = useQuery(GET_POST, {

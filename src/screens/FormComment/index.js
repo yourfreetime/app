@@ -1,38 +1,42 @@
-import React, { useState } from "react";
-import { Image, Text, View, TextInput } from "react-native";
-import { firebase } from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
-import { StackActions } from "@react-navigation/core";
+import React, { useState } from 'react';
+import { Image, Text, View, TextInput } from 'react-native';
+import { StackActions } from '@react-navigation/core';
+import { useMutation } from '@apollo/react-hooks';
+import { uCreateComment } from 'yourfreetime/cache';
+import { CREATE_COMMENT } from 'yourfreetime/mutations';
+import { t } from '../../i18n';
 
-import style from "./FormComment.style";
-import { t } from "../../i18n";
+import style from './FormComment.style';
 
-import Button from "../../components/Button";
-import Root from "../../components/Root";
-import Card from "../../components/Card";
+import Button from '../../components/Button';
+import Root from '../../components/Root';
+import Card from '../../components/Card';
 
-import { createComment } from "../../services/post";
+import { useStorage } from '../../provider/StorageProvider';
 
 const FormCommentScreen = ({ navigation, route }) => {
-  const [text, setText] = useState("");
+  const { currentUser } = useStorage();
+  const [text, setText] = useState('');
+  const [createComment] = useMutation(CREATE_COMMENT, {
+    onCompleted: () => navigation.dispatch(StackActions.pop()),
+    update: uCreateComment.bind(this, { postId: route.params.post.id })
+  });
 
-  const currentUser = firebase.auth().currentUser;
   const post = route.params.post;
-  const author = route.params.author;
 
   return (
     <Root style={{ paddingTop: 3 }}>
       <Card style={style.post}>
-        <Image style={style.userImage} source={{ uri: author.picture }} />
+        <Image style={style.userImage} source={{ uri: post.author.picture }} />
         <Text style={style.textPost}>{post.text}</Text>
       </Card>
-      <Text style={style.titleAnswer}>{t("YOUR_ANSWER")}</Text>
+      <Text style={style.titleAnswer}>{t('YOUR_ANSWER')}</Text>
       <View style={style.form}>
         <Image style={style.userImage} source={{ uri: currentUser.photoURL }} />
         <TextInput
           style={style.input}
           textAlignVertical="top"
-          placeholder={t("PLACEHOLDER_COMMENT")}
+          placeholder={t('PLACEHOLDER_COMMENT')}
           multiline
           numberOfLines={4}
           onChangeText={newText => setText(newText)}
@@ -42,17 +46,8 @@ const FormCommentScreen = ({ navigation, route }) => {
       </View>
       <Button
         variant="primary"
-        title={t("ANSWER")}
-        onPress={async () => {
-          await createComment(post.id, {
-            author: firestore()
-              .collection("users")
-              .doc(currentUser.uid),
-            text
-          });
-
-          navigation.dispatch(StackActions.pop());
-        }}
+        title={t('ANSWER')}
+        onPress={() => createComment({ variables: { text, postId: post.id } })}
       />
     </Root>
   );

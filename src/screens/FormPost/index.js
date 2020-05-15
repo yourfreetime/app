@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Image, Text, View, TextInput } from 'react-native';
 import { useMutation } from '@apollo/react-hooks';
 import { StackActions } from '@react-navigation/core';
+import { CREATE_POST, UPDATE_POST } from 'yourfreetime/mutations';
+import { uCreatePost, uUpdatePost } from 'yourfreetime/cache';
 import { t } from '../../i18n';
 
 import style from './FormPost.style';
@@ -10,7 +12,6 @@ import Button from '../../components/Button';
 import Root from '../../components/Root';
 
 import { useStorage } from '../../provider/StorageProvider';
-import { CREATE_POST, UPDATE_POST, LIST_POSTS_FEED } from '../../services/post';
 
 const FormPostScreen = ({ navigation, route }) => {
   const { currentUser } = useStorage();
@@ -19,28 +20,13 @@ const FormPostScreen = ({ navigation, route }) => {
 
   const [createPost] = useMutation(CREATE_POST, {
     onCompleted,
-    update(cache, { data }) {
-      const dataList = cache.readQuery({ query: LIST_POSTS_FEED });
-
-      cache.writeQuery({
-        query: LIST_POSTS_FEED,
-        data: { listPostsFeed: [data.createPost, ...dataList.listPostsFeed] }
-      });
-    }
+    update: uCreatePost.bind(this, null)
   });
   const [updatePost] = useMutation(UPDATE_POST, {
     onCompleted,
-    update(cache, { data }) {
-      const { listPostsFeed } = cache.readQuery({ query: LIST_POSTS_FEED });
-
-      const posts = listPostsFeed.map(item =>
-        item.id === route.params.post.id ? data.updatePost : item
-      );
-      cache.writeQuery({
-        query: LIST_POSTS_FEED,
-        data: { listPostsFeed: posts }
-      });
-    }
+    update: uUpdatePost.bind(this, {
+      postId: route.params && route.params.post.id
+    })
   });
 
   useEffect(() => {
