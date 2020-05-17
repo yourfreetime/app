@@ -105,16 +105,16 @@ export const GET_POST = gql`
   }
 `;
 
-export const allPosts = callback => {
+export const allPosts = (callback) => {
   const unsubscribe = firestore()
     .collection('posts')
     .orderBy('date', 'desc')
-    .onSnapshot(querySnapshot => {
+    .onSnapshot((querySnapshot) => {
       callback(
-        querySnapshot.docs.map(documentSnapshot => ({
+        querySnapshot.docs.map((documentSnapshot) => ({
           ...documentSnapshot.data(),
           id: documentSnapshot.id,
-          key: documentSnapshot.id
+          key: documentSnapshot.id,
         }))
       );
     });
@@ -127,12 +127,12 @@ export const searchPosts = (search, callback) => {
     .collection('posts')
     .where('text', '>=', search)
     .where('text', '<=', search + '\uf8ff')
-    .onSnapshot(querySnapshot => {
+    .onSnapshot((querySnapshot) => {
       callback(
-        querySnapshot.docs.map(documentSnapshot => ({
+        querySnapshot.docs.map((documentSnapshot) => ({
           ...documentSnapshot.data(),
           id: documentSnapshot.id,
-          key: documentSnapshot.id
+          key: documentSnapshot.id,
         }))
       );
     });
@@ -144,59 +144,19 @@ export const getPost = (postId, callback) => {
   const unsubscribe = firestore()
     .collection('posts')
     .doc(postId)
-    .onSnapshot(docSnapshot => {
+    .onSnapshot((docSnapshot) => {
       callback({
         ...docSnapshot.data(),
         id: docSnapshot.id,
-        key: docSnapshot.id
+        key: docSnapshot.id,
       });
     });
 
   return unsubscribe;
 };
 
-export const allByLocation = async location => {
-  const max = new firestore.GeoPoint(
-    location.latitude + 10,
-    location.longitude + 10
-  );
-  const min = new firestore.GeoPoint(
-    location.latitude - 10,
-    location.longitude - 10
-  );
-
-  const users = await firestore()
-    .collection('users')
-    .where('position', '<=', max)
-    .where('position', '>=', min)
-    .get();
-
-  let newFirestore = firestore().collection('posts');
-
-  users.docs.map(item => {
-    newFirestore = newFirestore.where(
-      'author',
-      '==',
-      firestore()
-        .collection('users')
-        .doc(item.id)
-    );
-  });
-
-  const posts = await newFirestore.orderBy('date', 'desc').get();
-
-  return posts.docs.map(documentSnapshot => ({
-    ...documentSnapshot.data(),
-    id: documentSnapshot.id,
-    key: documentSnapshot.id
-  }));
-};
-
-export const allSaveByUser = async userId => {
-  const user = await firestore()
-    .collection('users')
-    .doc(userId)
-    .get();
+export const allSaveByUser = async (userId) => {
+  const user = await firestore().collection('users').doc(userId).get();
 
   let posts = [];
   let saves = user.data().saves;
@@ -208,7 +168,7 @@ export const allSaveByUser = async userId => {
       posts.push({
         ...post.data(),
         id: post.id,
-        key: post.id
+        key: post.id,
       });
     }
 
@@ -218,40 +178,34 @@ export const allSaveByUser = async userId => {
   return [];
 };
 
-export const createPost = async postObject => {
+export const createPost = async (postObject) => {
   await firestore()
     .collection('posts')
     .add({
       ...postObject,
-      date: firestore.Timestamp.fromDate(new Date())
+      date: firestore.Timestamp.fromDate(new Date()),
     });
 };
 
-export const deletePost = async postId => {
-  await firestore()
-    .collection('posts')
-    .doc(postId)
-    .delete();
+export const deletePost = async (postId) => {
+  await firestore().collection('posts').doc(postId).delete();
 };
 
 export const updatePost = async (postId, text) => {
-  await firestore()
-    .collection('posts')
-    .doc(postId)
-    .update({ text });
+  await firestore().collection('posts').doc(postId).update({ text });
 };
 
 export const likePost = async (postId, likeObject) => {
   const newLikeObject = {
     ...likeObject,
-    date: firestore.Timestamp.fromDate(new Date())
+    date: firestore.Timestamp.fromDate(new Date()),
   };
 
   await firestore()
     .collection('posts')
     .doc(postId)
     .update({
-      likes: firebase.firestore.FieldValue.arrayUnion(newLikeObject)
+      likes: firebase.firestore.FieldValue.arrayUnion(newLikeObject),
     });
 };
 
@@ -260,20 +214,20 @@ export const unlikePost = async (postId, likeObject) => {
     .collection('posts')
     .doc(postId)
     .update({
-      likes: firebase.firestore.FieldValue.arrayRemove(likeObject)
+      likes: firebase.firestore.FieldValue.arrayRemove(likeObject),
     });
 };
 
 export const createComment = async (postId, commentObject) => {
   const newCommentObject = {
     ...commentObject,
-    date: firestore.Timestamp.fromDate(new Date())
+    date: firestore.Timestamp.fromDate(new Date()),
   };
 
   await firestore()
     .collection('posts')
     .doc(postId)
     .update({
-      comments: firebase.firestore.FieldValue.arrayUnion(newCommentObject)
+      comments: firebase.firestore.FieldValue.arrayUnion(newCommentObject),
     });
 };

@@ -1,32 +1,38 @@
-import React, { useState, useEffect } from "react";
-import { FlatList, Text } from "react-native";
-import { t } from "../../i18n";
+import React, { useEffect } from 'react';
+import { FlatList, Text, ToastAndroid } from 'react-native';
+import { useLazyQuery } from '@apollo/react-hooks';
+import { t } from '../../i18n';
 
-import Geolocation from "@react-native-community/geolocation";
-import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import Geolocation from '@react-native-community/geolocation';
+import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import style from "./Global.style";
+import style from './Global.style';
 
-import Root from "../../components/Root";
-import Loader from "../../components/Loader";
-import Card from "../../components/Card";
-import CardPost from "../../containers/CardPost";
+import Root from '../../components/Root';
+import Loader from '../../components/Loader';
+import Card from '../../components/Card';
+import CardPost from '../../containers/CardPost';
 
-import { allByLocation } from "../../services/post";
+import { LIST_POSTS_BY_LOCATION } from 'yourfreetime/queries';
 
 const GlobalScreen = () => {
-  const [posts, setPosts] = useState();
-  const [loading, setLoading] = useState(true);
+  const [listPosts, { called, loading, data }] = useLazyQuery(
+    LIST_POSTS_BY_LOCATION
+  );
 
   useEffect(() => {
-    Geolocation.getCurrentPosition(async info => {
-      const posts = await allByLocation(info.coords);
-      setPosts(posts);
-      setLoading(false);
-    });
-  });
+    Geolocation.getCurrentPosition(
+      (info) => listPosts({ variables: info.coords }),
+      (err) =>
+        ToastAndroid.showWithGravity(
+          err.message,
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM
+        )
+    );
+  }, []);
 
-  if (loading) {
+  if (!called || loading) {
     return <Loader show />;
   }
 
@@ -34,11 +40,11 @@ const GlobalScreen = () => {
     <Root>
       <Card style={style.title}>
         <MaterialIcons name="access-point" size={25} style={style.icon} />
-        <Text>{t("PHRASE_RADAR")}</Text>
+        <Text>{t('PHRASE_RADAR')}</Text>
       </Card>
       <FlatList
         style={{ margin: -3 }}
-        data={posts}
+        data={data.listPostsByLocation}
         columnWrapperStyle
         numColumns={2}
         renderItem={({ item }) => (
