@@ -20,19 +20,16 @@ const GlobalScreen = () => {
     LIST_POSTS_BY_LOCATION
   );
 
-  const successPosition = (info) => {
-    const { latitude, longitude } = info.coords;
-    listPosts({ variables: { filter: { latitude, longitude } } });
-  };
-  const errorPosition = (err) =>
-    ToastAndroid.showWithGravity(
-      err.message,
-      ToastAndroid.LONG,
-      ToastAndroid.BOTTOM
-    );
-
   useEffect(() => {
-    Geolocation.getCurrentPosition(successPosition, errorPosition);
+    Geolocation.getCurrentPosition(
+      (info) => listPosts({ variables: info.coords }),
+      (err) =>
+        ToastAndroid.showWithGravity(
+          err.message,
+          ToastAndroid.LONG,
+          ToastAndroid.BOTTOM
+        )
+    );
   }, []);
 
   if (!called || loading) {
@@ -47,7 +44,7 @@ const GlobalScreen = () => {
       </Card>
       <FlatList
         style={{ margin: -3 }}
-        data={data?.listPostsByLocation}
+        data={data.listPostsByLocation}
         columnWrapperStyle
         numColumns={2}
         renderItem={({ item }) => (
