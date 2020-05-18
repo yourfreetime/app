@@ -7255,10 +7255,10 @@ yargs@^9.0.0:
     y18n "^3.2.1"
     yargs-parser "^7.0.0"
 
-yourfreetime@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.yarnpkg.com/yourfreetime/-/yourfreetime-0.1.5.tgz#7c63cabf621730dcfc8fbaa2d472a5d0eeb031a0"
-  integrity sha512-WkfV0kZCYZomrGsSWJ26bCuUO8pV6gGXcxp+lZvY0mISTtrzs0jEgBSnWaD8+1cvIRm5edf8QPPF7xnY9w7leg==
+yourfreetime@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/yourfreetime/-/yourfreetime-0.1.6.tgz#a2e62400f9b63f0a60a5d265b012f44b79c4163f"
+  integrity sha512-DofATbRh5Lajttdrgle5m14p+fB/WJLzzpMS5la6XBRNSV3T4KVzKHeZNIoXxaTjKuSKrl1fQFOhdhKRQ5xvHw==
 
 zen-observable-ts@^0.8.21:
   version "0.8.21"

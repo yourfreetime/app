@@ -1,51 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { View } from 'react-native';
-import { firebase } from '@react-native-firebase/auth';
-import firestore from '@react-native-firebase/firestore';
 import { useNavigation, StackActions } from '@react-navigation/core';
+import { useMutation } from '@apollo/react-hooks';
+import { CREATE_LIKE, DELETE_LIKE } from 'yourfreetime/mutations';
+import { uCreateLike, uDeleteLike } from 'yourfreetime/cache';
 import { t } from '../../../../i18n';
 
 import ButtonFooter from '../ButtonFooter';
 
 import style from './Footer.style';
 
-import { likePost, unlikePost } from '../../../../services/post';
 import { useStorage } from '../../../../provider/StorageProvider';
 
 const FooterComponent = ({ post }) => {
   const { currentUser } = useStorage();
   const navigation = useNavigation();
+  const [createLike] = useMutation(CREATE_LIKE, {
+    update: uCreateLike.bind(this, { postId: post.id })
+  });
+  const [deleteLike] = useMutation(DELETE_LIKE, {
+    update: uDeleteLike.bind(this, { postId: post.id })
+  });
 
-  const isLike = post.likes.some(item => item.user.id === currentUser.id);
+  const isLiked = post.likes.some(item => item.user.id === currentUser.id);
   const objectDispatch = navigation.dangerouslyGetParent() || navigation;
-  const countLikes = post.likes ? post.likes.length : 0;
-  const countComments = post.comments ? post.comments.length : 0;
 
   return (
     <View style={style.buttons}>
       <ButtonFooter
-        onPress={async () => {
-          if (!isLike) {
-            await likePost(post.id, {
-              user: firestore()
-                .collection('users')
-                .doc(firebase.auth().currentUser.uid)
-            });
+        onPress={() => {
+          if (!isLiked) {
+            createLike({ variables: { postId: post.id } });
           } else {
-            await unlikePost(post.id, isLike);
+            deleteLike({ variables: { postId: post.id } });
           }
         }}
         icon="enhance"
-        text={`${countLikes} ${t('ENHANCE')}`}
-        active={isLike}
+        text={`${post.likes.length} ${t('ENHANCE')}`}
+        active={isLiked}
       />
       <ButtonFooter
         onPress={() =>
           objectDispatch.dispatch(StackActions.push('FormComment', { post }))
         }
         icon="reply"
-        text={`${countComments} ${t('ANSWER')}`}
+        text={`${post.comments.length} ${t('ANSWER')}`}
       />
     </View>
   );

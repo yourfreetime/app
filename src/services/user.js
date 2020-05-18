@@ -62,12 +62,6 @@ export const searchUsers = (search, callback) => {
   return unsubscribe;
 };
 
-export const getUser = async userId =>
-  await firestore()
-    .collection('users')
-    .doc(userId)
-    .get();
-
 export const setUser = async (userId, userObject) => {
   await firestore()
     .collection('users')
