@@ -32,7 +32,7 @@ const FormCommentScreen = ({ navigation, route }) => {
       </Card>
       <Text style={style.titleAnswer}>{t('YOUR_ANSWER')}</Text>
       <View style={style.form}>
-        <Image style={style.userImage} source={{ uri: currentUser.photoURL }} />
+        <Image style={style.userImage} source={{ uri: currentUser.picture }} />
         <TextInput
           style={style.input}
           textAlignVertical="top"

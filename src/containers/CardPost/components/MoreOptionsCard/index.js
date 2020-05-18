@@ -1,17 +1,34 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Alert, ToastAndroid, View } from 'react-native';
+import { Alert, ToastAndroid } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/core';
+import { useMutation } from '@apollo/react-hooks';
+import { uDeletePost } from 'yourfreetime/cache';
+import { DELETE_POST } from 'yourfreetime/mutations';
 import { t } from '../../../../i18n';
 
 import MoreOptions from '../../../../components/MoreOptions';
 
-import { deletePost } from '../../../../services/post';
 import { savePost } from '../../../../services/user';
 import { useStorage } from '../../../../provider/StorageProvider';
 
 const MoreOptionsCardComponent = ({ post }) => {
   const { currentUser } = useStorage();
+  const [deletePost] = useMutation(DELETE_POST, {
+    onCompleted: () =>
+      ToastAndroid.showWithGravity(
+        t('SUCCESS_DELETE_POST'),
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM
+      ),
+    onError: () =>
+      ToastAndroid.showWithGravity(
+        t('ERROR_DELETE_POST'),
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM
+      ),
+    update: uDeletePost.bind(this, { postId: post.id })
+  });
   const navigation = useNavigation();
 
   const objectDispatch = navigation.dangerouslyGetParent() || navigation;
@@ -28,22 +45,7 @@ const MoreOptionsCardComponent = ({ post }) => {
         { text: t('CANCEL'), style: 'cancel' },
         {
           text: t('CONFIRM'),
-          onPress: async () => {
-            try {
-              await deletePost(post.id);
-              ToastAndroid.showWithGravity(
-                t('SUCCESS_DELETE_POST'),
-                ToastAndroid.LONG,
-                ToastAndroid.BOTTOM
-              );
-            } catch {
-              ToastAndroid.showWithGravity(
-                t('ERROR_DELETE_POST'),
-                ToastAndroid.LONG,
-                ToastAndroid.BOTTOM
-              );
-            }
-          }
+          onPress: () => deletePost({ variables: { postId: post.id } })
         }
       ],
       { cancelable: false }
