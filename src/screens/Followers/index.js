@@ -1,23 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { FlatList } from "react-native";
+import React from 'react';
+import { FlatList } from 'react-native';
+import { useQuery } from '@apollo/react-hooks';
+import { LIST_FOLLOWERS } from 'yourfreetime/queries';
 
-import Root from "../../components/Root";
-import Loader from "../../components/Loader";
-import CardUser from "../../containers/CardUser";
-
-import { listFollow } from "../../services/follow";
+import Root from '../../components/Root';
+import Loader from '../../components/Loader';
+import CardUser from '../../containers/CardUser';
 
 const FollowersScreen = ({ route }) => {
-  const [followers, setFollowers] = useState();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const unsubscribe = listFollow(route.params.userId, followers => {
-      setFollowers(followers);
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
+  const { loading, error, data } = useQuery(LIST_FOLLOWERS, {
+    variables: { userId: route.params.userId }
   });
 
   if (loading) {
@@ -28,8 +20,9 @@ const FollowersScreen = ({ route }) => {
     <Root>
       <FlatList
         style={{ margin: -3 }}
-        data={followers}
-        renderItem={({ item }) => <CardUser userRef={item.data().user} />}
+        data={data.listFollowers}
+        keyExtractor={item => item.user.id}
+        renderItem={({ item }) => <CardUser user={item.user} />}
       />
     </Root>
   );

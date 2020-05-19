@@ -1,48 +1,5 @@
 import firestore from '@react-native-firebase/firestore';
 import firebase from '@react-native-firebase/app';
-import gql from 'graphql-tag';
-
-export const GET_USER = gql`
-  query getUser($userId: String!) {
-    getUser(userId: $userId) {
-      id
-      name
-      picture
-      savedPosts {
-        date
-      }
-    }
-    listFollowers(filter: { userId: $userId }) {
-      user {
-        id
-        name
-      }
-      userFollow {
-        id
-        name
-      }
-    }
-    listPosts(filter: { authorId: $userId }) {
-      id
-      text
-      dateCreated
-      author {
-        id
-        name
-        picture
-      }
-      likes {
-        date
-        user {
-          id
-        }
-      }
-      comments {
-        dateCreated
-      }
-    }
-  }
-`;
 
 export const searchUsers = (search, callback) => {
   const unsubscribe = firestore()
@@ -60,13 +17,6 @@ export const searchUsers = (search, callback) => {
     });
 
   return unsubscribe;
-};
-
-export const setUser = async (userId, userObject) => {
-  await firestore()
-    .collection('users')
-    .doc(userId)
-    .update(userObject);
 };
 
 export const savePost = async (userId, postId) => {

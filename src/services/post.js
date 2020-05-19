@@ -43,10 +43,3 @@ export const allSaveByUser = async userId => {
 
   return [];
 };
-
-export const deletePost = async postId => {
-  await firestore()
-    .collection('posts')
-    .doc(postId)
-    .delete();
-};

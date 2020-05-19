@@ -1,1 +1,1 @@
-export const URL = 'https://yourfreetime.herokuapp.com';
+export const URL = 'http://localhost:4000';

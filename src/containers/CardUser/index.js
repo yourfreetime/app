@@ -1,33 +1,20 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { Text, TouchableNativeFeedback } from "react-native";
-import { useNavigation, StackActions } from "@react-navigation/core";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Text, TouchableNativeFeedback } from 'react-native';
+import { useNavigation, StackActions } from '@react-navigation/core';
 
-import style from "./CardUser.style";
+import style from './CardUser.style';
 
-import Avatar from "../../components/Avatar";
-import Card from "../../components/Card";
+import Avatar from '../../components/Avatar';
+import Card from '../../components/Card';
 
-const CardUserComponent = ({ userRef, user: userExist }) => {
+const CardUserComponent = ({ user }) => {
   const navigation = useNavigation();
-
-  const [user, setUser] = useState({
-    name: "",
-    picture: null
-  });
-
-  useEffect(() => {
-    if (userExist) {
-      setUser(userExist);
-    } else {
-      userRef.get().then(snap => setUser({ ...snap.data(), id: snap.id }));
-    }
-  }, []);
 
   return (
     <TouchableNativeFeedback
       onPress={() => {
-        navigation.dispatch(StackActions.push("User", { userId: user.id }));
+        navigation.dispatch(StackActions.push('User', { userId: user.id }));
       }}
     >
       <Card style={style.card}>
