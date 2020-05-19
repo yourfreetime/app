@@ -11,7 +11,7 @@ import CardPost from '../../containers/CardPost';
 import Root from '../../components/Root';
 
 const FeedScreen = ({ navigation }) => {
-  const { loading, data, error } = useQuery(LIST_POSTS_FEED);
+  const { loading, data, refetch } = useQuery(LIST_POSTS_FEED);
 
   if (loading) {
     return <Loader show />;
@@ -26,6 +26,8 @@ const FeedScreen = ({ navigation }) => {
         <Text>{t('PHRASE_FEED')}</Text>
       </Card>
       <FlatList
+        onRefresh={() => refetch()}
+        refreshing={loading}
         style={{ margin: -3 }}
         data={data.listPostsFeed}
         renderItem={({ item }) => <CardPost post={item} />}
