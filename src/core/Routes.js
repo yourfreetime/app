@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-community/async-storage';
 import { TouchableOpacity, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import { StorageProvider } from '../provider/StorageProvider';
 import colors from '../core/colors';
 import { t } from '../i18n';
 
@@ -40,94 +39,92 @@ const RoutesCore = () => {
   }
 
   return (
-    <StorageProvider>
-      <Stack.Navigator initialRouteName={screen}>
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ header: () => null }}
-        />
-        <Stack.Screen
-          name="Register"
-          component={RegisterScreen}
-          options={{ header: () => null }}
-        />
-        <Stack.Screen
-          name="Home"
-          component={HomeScreen}
-          options={({ navigation }) => ({
-            headerTitle: props => <Header {...props} />,
-            headerStyle: {
-              backgroundColor: colors.white,
-              borderBottomWidth: 1,
-              borderBottomColor: colors.primary
-            },
-            headerRight: () => (
-              <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
-                <UserAvatar />
-              </TouchableOpacity>
-            )
-          })}
-        />
-        <Stack.Screen
-          name="FormPost"
-          component={FormPostScreen}
-          options={{
-            headerTitle: '',
-            headerStyle: { backgroundColor: colors.background, elevation: 0 }
-          }}
-        />
-        <Stack.Screen
-          name="User"
-          component={UserScreen}
-          options={{
-            headerTitle: '',
-            headerStyle: { backgroundColor: colors.background, elevation: 0 }
-          }}
-        />
-        <Stack.Screen
-          name="Settings"
-          component={SettingsScreen}
-          options={{
-            headerTitle: '',
-            headerStyle: { backgroundColor: colors.background, elevation: 0 }
-          }}
-        />
-        <Stack.Screen
-          name="Post"
-          component={PostScreen}
-          options={{
-            headerTitle: '',
-            headerStyle: { backgroundColor: colors.background, elevation: 0 }
-          }}
-        />
-        <Stack.Screen
-          name="FormComment"
-          component={FormCommentScreen}
-          options={{
-            headerTitle: '',
-            headerStyle: { backgroundColor: colors.background, elevation: 0 }
-          }}
-        />
-        <Stack.Screen
-          name="PostSaves"
-          component={PostSavesScreen}
-          options={{ headerTitle: t('SAVED') }}
-        />
-        <Stack.Screen
-          name="Followers"
-          component={FollowersScreen}
-          options={{ headerTitle: t('FOLLOWERS') }}
-        />
-        <Stack.Screen
-          name="Search"
-          component={SearchScreen}
-          options={{
-            headerStyle: { elevation: 0 }
-          }}
-        />
-      </Stack.Navigator>
-    </StorageProvider>
+    <Stack.Navigator initialRouteName={screen}>
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ header: () => null }}
+      />
+      <Stack.Screen
+        name="Register"
+        component={RegisterScreen}
+        options={{ header: () => null }}
+      />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
+        options={({ navigation }) => ({
+          headerTitle: props => <Header {...props} />,
+          headerStyle: {
+            backgroundColor: colors.white,
+            borderBottomWidth: 1,
+            borderBottomColor: colors.primary
+          },
+          headerRight: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+              <UserAvatar />
+            </TouchableOpacity>
+          )
+        })}
+      />
+      <Stack.Screen
+        name="FormPost"
+        component={FormPostScreen}
+        options={{
+          headerTitle: '',
+          headerStyle: { backgroundColor: colors.background, elevation: 0 }
+        }}
+      />
+      <Stack.Screen
+        name="User"
+        component={UserScreen}
+        options={{
+          headerTitle: '',
+          headerStyle: { backgroundColor: colors.background, elevation: 0 }
+        }}
+      />
+      <Stack.Screen
+        name="Settings"
+        component={SettingsScreen}
+        options={{
+          headerTitle: '',
+          headerStyle: { backgroundColor: colors.background, elevation: 0 }
+        }}
+      />
+      <Stack.Screen
+        name="Post"
+        component={PostScreen}
+        options={{
+          headerTitle: '',
+          headerStyle: { backgroundColor: colors.background, elevation: 0 }
+        }}
+      />
+      <Stack.Screen
+        name="FormComment"
+        component={FormCommentScreen}
+        options={{
+          headerTitle: '',
+          headerStyle: { backgroundColor: colors.background, elevation: 0 }
+        }}
+      />
+      <Stack.Screen
+        name="PostSaves"
+        component={PostSavesScreen}
+        options={{ headerTitle: t('SAVED') }}
+      />
+      <Stack.Screen
+        name="Followers"
+        component={FollowersScreen}
+        options={{ headerTitle: t('FOLLOWERS') }}
+      />
+      <Stack.Screen
+        name="Search"
+        component={SearchScreen}
+        options={{
+          headerStyle: { elevation: 0 }
+        }}
+      />
+    </Stack.Navigator>
   );
 };
 
