@@ -1,28 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 
-export const searchPosts = (search, callback) => {
-  const unsubscribe = firestore()
-    .collection('posts')
-    .where('text', '>=', search)
-    .where('text', '<=', search + '\uf8ff')
-    .onSnapshot(querySnapshot => {
-      callback(
-        querySnapshot.docs.map(documentSnapshot => ({
-          ...documentSnapshot.data(),
-          id: documentSnapshot.id,
-          key: documentSnapshot.id
-        }))
-      );
-    });
-
-  return unsubscribe;
-};
-
-export const allSaveByUser = async userId => {
-  const user = await firestore()
-    .collection('users')
-    .doc(userId)
-    .get();
+export const allSaveByUser = async (userId) => {
+  const user = await firestore().collection('users').doc(userId).get();
 
   let posts = [];
   let saves = user.data().saves;
@@ -34,7 +13,7 @@ export const allSaveByUser = async userId => {
       posts.push({
         ...post.data(),
         id: post.id,
-        key: post.id
+        key: post.id,
       });
     }
 
