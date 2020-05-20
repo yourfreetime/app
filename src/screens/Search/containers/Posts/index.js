@@ -1,28 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { FlatList } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { FlatList } from 'react-native';
+import { useQuery } from '@apollo/react-hooks';
 
-import CardPost from "../../../../containers/CardPost";
-import Root from "../../../../components/Root";
-import Loader from "../../../../components/Loader";
+import CardPost from '../../../../containers/CardPost';
+import Root from '../../../../components/Root';
+import Loader from '../../../../components/Loader';
 
-import { searchPosts } from "../../../../services/post";
+import { LIST_POSTS } from 'yourfreetime/queries';
 
 const PostsContainer = ({ search }) => {
-  const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    setLoading(true);
-
-    const unsubscribe = searchPosts(search, posts => {
-      if (search) {
-        setPosts(posts);
-      }
-      setLoading(false);
-    });
-
-    return () => unsubscribe();
-  }, [search]);
+  const { loading, data } = useQuery(LIST_POSTS, {
+    variables: { search },
+  });
 
   if (loading) {
     return <Loader show />;
@@ -32,7 +21,7 @@ const PostsContainer = ({ search }) => {
     <Root>
       <FlatList
         style={{ margin: -3 }}
-        data={posts}
+        data={data.listPostsFeed}
         renderItem={({ item }) => <CardPost post={item} />}
       />
     </Root>
