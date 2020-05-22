@@ -1,24 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { FlatList } from "react-native";
+import React from 'react';
+import { FlatList } from 'react-native';
+import { useQuery } from '@apollo/react-hooks';
+import { LIST_SAVED_POSTS } from 'yourfreetime/queries';
 
-import Root from "../../components/Root";
-import Loader from "../../components/Loader";
-import CardPost from "../../containers/CardPost";
-
-import { allSaveByUser } from "../../services/post";
+import Root from '../../components/Root';
+import Loader from '../../components/Loader';
+import CardPost from '../../containers/CardPost';
 
 const PostSavesScreen = ({ route }) => {
-  const [posts, setPosts] = useState();
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const getData = async () => {
-      const newPosts = await allSaveByUser(route.params.userId);
-      setPosts(newPosts);
-      setLoading(false);
-    };
-
-    getData();
+  const { loading, data, refetch } = useQuery(LIST_SAVED_POSTS, {
+    variables: { userId: route.params.userId }
   });
 
   if (loading) {
@@ -28,9 +19,11 @@ const PostSavesScreen = ({ route }) => {
   return (
     <Root>
       <FlatList
+        onRefresh={() => refetch()}
+        refreshing={loading}
         style={{ margin: -3 }}
-        data={posts}
-        renderItem={({ item }) => <CardPost post={item} simple />}
+        data={data.listSavedPosts}
+        renderItem={({ item }) => <CardPost post={item.post} />}
       />
     </Root>
   );
