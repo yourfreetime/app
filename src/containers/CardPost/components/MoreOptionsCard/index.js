@@ -3,13 +3,12 @@ import PropTypes from 'prop-types';
 import { Alert, ToastAndroid } from 'react-native';
 import { useNavigation, StackActions } from '@react-navigation/core';
 import { useMutation } from '@apollo/react-hooks';
-import { uDeletePost } from 'yourfreetime/cache';
-import { DELETE_POST } from 'yourfreetime/mutations';
+import { uDeletePost, uCreateSavedPost } from 'yourfreetime/cache';
+import { DELETE_POST, CREATE_SAVED_POST } from 'yourfreetime/mutations';
 import { t } from '../../../../i18n';
 
 import MoreOptions from '../../../../components/MoreOptions';
 
-import { savePost } from '../../../../services/user';
 import { useStorage } from '../../../../provider/StorageProvider';
 
 const MoreOptionsCardComponent = ({ post }) => {
@@ -28,6 +27,21 @@ const MoreOptionsCardComponent = ({ post }) => {
         ToastAndroid.BOTTOM
       ),
     update: uDeletePost.bind(this, { postId: post.id })
+  });
+  const [createSavedPost] = useMutation(CREATE_SAVED_POST, {
+    onCompleted: () =>
+      ToastAndroid.showWithGravity(
+        t('SUCCESS_SAVE_POST'),
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM
+      ),
+    onError: () =>
+      ToastAndroid.showWithGravity(
+        t('ERROR_SAVE_POST'),
+        ToastAndroid.LONG,
+        ToastAndroid.BOTTOM
+      ),
+    update: uCreateSavedPost.bind(this, { userId: currentUser.id })
   });
   const navigation = useNavigation();
 
@@ -52,21 +66,8 @@ const MoreOptionsCardComponent = ({ post }) => {
     );
   };
 
-  const onSave = async () => {
-    try {
-      await savePost(currentUser.id, post.id);
-      ToastAndroid.showWithGravity(
-        t('SUCCESS_SAVE_POST'),
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM
-      );
-    } catch {
-      ToastAndroid.showWithGravity(
-        t('ERROR_SAVE_POST'),
-        ToastAndroid.LONG,
-        ToastAndroid.BOTTOM
-      );
-    }
+  const onSave = () => {
+    createSavedPost({ variables: { postId: post.id } });
   };
 
   let options = [t('SAVE'), t('DENOUNCE')];
