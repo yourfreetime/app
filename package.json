@@ -23,7 +23,7 @@
     "graphql": "^15.2.0",
     "graphql-tag": "^2.10.3",
     "i18n-js": "^3.7.0",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "react": "~16.13.1",
     "react-dom": "~16.13.1",
     "react-native": "~0.62.3",
